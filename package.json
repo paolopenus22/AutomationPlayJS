@@ -1,0 +1,19 @@
+{
+  "name": "magenicmovies-selenium",
+  "version": "1.0.0",
+  "description": "Magenic Movies Automation Project",
+  "main": "sample.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://BaronP@dev.azure.com/BaronP/Automation%20Playground/_git/magenicmovies-selenium-js"
+  },
+  "author": "Paolo Penus",
+  "license": "ISC",
+  "dependencies": {
+    "chromedriver": "^85.0.1",
+    "selenium-webdriver": "^4.0.0-alpha.7"
+  }
+}
