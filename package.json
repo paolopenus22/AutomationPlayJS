@@ -15,6 +15,7 @@
   "dependencies": {
     "@types/jest": "^26.0.14",
     "chromedriver": "^85.0.1",
+    "jest-cli": "^26.4.2",
     "selenium-webdriver": "^4.0.0-alpha.7"
   },
   "devDependencies": {
