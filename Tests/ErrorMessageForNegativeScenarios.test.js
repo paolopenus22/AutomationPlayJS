@@ -126,4 +126,3 @@ describe('Error messages for negative login scenarios', () => {
         await driver.close();
     });
 });
-
