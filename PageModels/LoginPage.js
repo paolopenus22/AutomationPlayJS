@@ -1,48 +1,42 @@
 const { By, until } = require("selenium-webdriver");
 const BasePage = require("../PageModels/BasePage");
 
+let emailField = By.css('input[formcontrolname="email"]');
+let passwordField = By.css('input[formcontrolname="password"]');
+let emailIcon = By.css('i[class="icon ion-ios-person"]');
+let passwordIcon = By.css('i[class="icon ion-ios-key"]');
+let invalidEmailMsg = By.css('[class="text-danger"] span');
+let passwordRequiredMsg = By.css('[class="text-danger"] div');
+let passwordIncorrectMsg = By.css('[class="text-danger"] p');
+let loginButton = By.css('button[type="submit"]');
+
 class LoginPage extends BasePage {
 
-constructor(){
-    super();
-    this.email = By.css('input[formcontrolname="email"]');
-    this.password = By.css('input[formcontrolname="password"]');
-    this.emailIcon = By.css('i[class="icon ion-ios-person"]');
-    this.passwordIcon = By.css('i[class="icon ion-ios-key"]');
-    this.invalidEmailMsg = By.css('[class="text-danger"] span');
-    this.passwordRequiredMsg = By.css('[class="text-danger"] div');
-    this.passwordIncorrectMsg = By.css('[class="text-danger"] p');
-    this.loginButton = By.css('button[type="submit"]');
-}
     inputLoginCredentials = async (email, password) => {
-        await this.driver.findElement(this.email).sendKeys(email);
-        await this.driver.findElement(this.password).sendKeys(password);
-        await this.driver.findElement(this.loginButton).click();
+        await this.enterText(emailField, email);
+        await this.enterText(passwordField, password);
+        await this.clickElement(loginButton);
     }
     getEmailErrorMessage = async () => {
-        await this.driver.wait(until.elementLocated(this.invalidEmailMsg), 5000);
-        return await this.driver.findElement(this.invalidEmailMsg).getText();
+        return await this.getText(invalidEmailMsg);
     }
     getRequiredPasswordErrorMessage = async () => {
-        await this.driver.wait(until.elementLocated(this.passwordRequiredMsg), 5000);
-        return await this.driver.findElement(this.passwordRequiredMsg).getText();
+        return await this.getText(passwordRequiredMsg);
     }
     getIncorrectPasswordErrorMessage = async () => {
-        await this.driver.wait(until.elementLocated(this.passwordIncorrectMsg), 5000);
-        return await this.driver.findElement(this.passwordIncorrectMsg).getText();
+        return await this.getText(passwordIncorrectMsg);
     }
     clickEmailIcon = async () => {
-        await this.driver.findElement(this.emailIcon).click()
+        await this.clickElement(emailIcon);
     }
     clickPasswordIcon = async () => {
-        await this.driver.findElement(this.passwordIcon).click()
+        await this.clickElement(passwordIcon);
     }
     verifyLoginButtonDisabled = async () => {
-        return await this.driver.findElement(this.loginButton).isEnabled();
+        return await this.verifyElementEnabled(loginButton);
     }
     isPageLoaded = async () => {
-        return await this.driver.findElement(this.email).isDisplayed() &&
-                this.driver.findElement(this.password).isDisplayed();
+        return await this.verifyPageLoad(emailField);
     }
 }
 module.exports = LoginPage;

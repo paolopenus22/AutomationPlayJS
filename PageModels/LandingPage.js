@@ -1,24 +1,18 @@
 const { By, until } = require("selenium-webdriver");
-const BasePage = require("../PageModels/BasePage");
+let BasePage = require("../PageModels/BasePage");
+let loginBtn = By.css('a[href="/login"]');
+let registerBtn = By.css('a[href="/register"]');
 
 class LandingPage extends BasePage {
 
-constructor(){
-    super();
-    this.loginBtn = By.css('a[href="/login"]');
-    this.registerBtn = By.css('a[href="/register"]');
-}
     clickLoginButton = async () => {
-        await this.driver.wait(until.elementLocated(this.loginBtn), 5000);
-        await this.driver.findElement(this.loginBtn).click();
+        this.clickElement(loginBtn);
     }
     clickRegisterButton = async () => {
-        await this.driver.wait(until.elementLocated(this.registerBtn), 5000);
-        await this.driver.findElement(this.registerBtn).click();
+        this.clickElement(registerBtn);
     }
     isPageLoaded = async () => {
-        return await this.driver.findElement(this.loginBtn).isDisplayed() &&
-            await this.driver.findElement(this.registerBtn).isDisplayed();
+        return this.verifyPageLoad(loginBtn) && this.verifyPageLoad(registerBtn);
     }
 }
 module.exports = LandingPage;

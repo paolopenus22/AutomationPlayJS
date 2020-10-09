@@ -1,28 +1,69 @@
-const { Builder } = require("selenium-webdriver");
+const { Builder, until, By } = require("selenium-webdriver");
 const chrome = require('chromedriver');
 const { testURL } = require("../Config/jest.config");
 
-initDriver = () => {
-    if (!this.driver) {
-        return new Builder().forBrowser('chrome').build();
+var Singleton = (() => {
+    let instance;
+ 
+    createInstance = () => {
+        let driver = new Builder().forBrowser('chrome').build();
+        return driver;
     }
-    else {
-        return this.driver;
-    }
-}
-
-var _driver = initDriver();
-
-class BasePage {     
-    constructor() {
-        this.driver = _driver;
+    return {
+        getInstance: () => {
+            if (!instance) {
+                instance = createInstance();
+            }
+            return instance;
+        }
     };
+})();
+
+class BasePage {
+ 
+    constructor() {
+        let driver = Singleton.getInstance();
+        this.driver = driver;
+}
     navigateToMoviesApp = async () => {
         await this.driver.manage().window().maximize();
         await this.driver.get(testURL);
     }
     closeMoviesApp = async () => {
         await this.driver.quit();
+    }
+    clickElement = async (el) => {
+        await this.driver.wait(until.elementLocated(el), 5000);
+        let elem = await this.driver.findElement(el).then((x) => {
+                    x.click();
+        });
+        return elem;
+    }
+    enterText = async (el, text) => {
+        await this.driver.wait(until.elementLocated(el), 5000);
+        let elem = await this.driver.findElement(el).then((x) => {
+                    x.sendKeys(text);
+        });
+        return elem;
+    }
+    getText = async (el) => {
+        await this.driver.wait(until.elementLocated(el), 5000);
+        let elemText = await this.driver.findElement(el).getText();
+        return elemText;
+    }
+    verifyElementEnabled = async (el) => {
+        await this.driver.wait(until.elementLocated(el), 5000);
+        let enable = await this.driver.findElement(el).then((x) => {
+                    x.isEnabled();
+        });
+        return enable;
+    }
+    verifyPageLoad = async (el) => {
+        await this.driver.wait(until.elementLocated(el), 5000);
+        let display = await this.driver.findElement(el).then((x) => {
+                    x.isDisplayed();
+        });
+        return display;
     }
 }
 module.exports = BasePage;
