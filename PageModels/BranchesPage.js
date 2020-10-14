@@ -1,44 +1,46 @@
+const { By, until } = require("selenium-webdriver");
+const BasePage = require("../PageModels/BasePage");
 
-const { Builder, By } = require("selenium-webdriver");
-const chrome = require('chromedriver');
-let driver = new Builder().forBrowser('chrome').build();;
-class BranchesPage {
+let branchCard = By.css('app-branch-card');
+let branchName = By.css("app-branch-card span");
+let branchAddress = By.css("app-branch-card p");
+let checkScheduleBtn = By.css("app-branch-card [class='btn btn-info m-2']");
 
-    constructor()
-    {
-        this.branchCard = driver.$$("app-branch-card");
-        this.branchName = driver.$$("app-branch-card span");
-        this.branchAddress = driver.$$("app-branch-card p");
-        this.checkScheduleBtn = driver.$$("app-branch-card [class='btn btn-info m-2']");        
+class BranchesPage extends BasePage {
+
+    CheckScheduleOfBranchName = async(name) => {
+        let cards = await this.driver.findElements(branchCard);
+        for(let i = 0; i < cards.length; i++)
+        {
+            if(await cards[i].findElement(branchName).getText() === name)
+            {
+                await cards[i].findElement(checkScheduleBtn).click();
+                break;
+            }
+        }
     }
 
-    ClickCheckScheduleOfBranchName = async(branchName) => 
-    {
-        await this.branchCard.filter((elem) => {
-            return elem.$$("app-branch-card span").get(1).getText().then(async(text) => {
-                return  await text.includes(await branchName);
-            })
-        }).$$("app-branch-card [class='btn btn-info m-2']").click();
-    }
-
-    ClickCheckScheduleOfBranchAddress = async(branchAddress) => 
-    {
-        await this.branchCard.filter((elem) => {
-            return elem.$$("app-branch-card p").get(1).getText().then(async(text) => {
-                return  await text.includes(await branchAddress);
-            })
-        }).$$("app-branch-card [class='btn btn-info m-2']").click();
+    CheckScheduleOfBranchAddress = async(address) => {
+        let cards = await this.driver.findElements(branchCard);            
+        for(let i = 0; i < cards.length; i++)
+        {
+            if(await cards[i].findElement(branchAddress).getText() === address)
+            {
+                await cards[i].findElement(checkScheduleBtn).click();
+                break;
+            }
+        }
     }
 
     ClickCheckScheduleOfRandomBranch = async() => {
-        let randomNum = this.checkScheduleBtn.count().then(function(num){
-            return Math.floor(Math.random() * num);
-        });
-        this.checkScheduleBtn.get(randomNum).click();
+        let cards = await this.driver.findElements(branchCard);            
+        let index = Math.floor(Math.random() * cards.length);
+
+        await cards[index].findElement(checkScheduleBtn).click();
     }
-
     
-
-
+    isPageLoaded = async () => {
+        return this.verifyPageLoad(branchCard);
+    }
 }
 module.exports = BranchesPage;
