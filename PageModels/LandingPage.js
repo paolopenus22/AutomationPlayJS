@@ -2,6 +2,7 @@ const { By, until } = require("selenium-webdriver");
 let BasePage = require("../PageModels/BasePage");
 let loginBtn = By.css('a[href="/login"]');
 let registerBtn = By.css('a[href="/register"]');
+let branchesBtn = By.css('a[href="/branches"]');
 
 class LandingPage extends BasePage {
 
@@ -13,6 +14,9 @@ class LandingPage extends BasePage {
     }
     isPageLoaded = async () => {
         return this.verifyPageLoad(loginBtn) && this.verifyPageLoad(registerBtn);
+    }
+    clickBranchesTab = async () => {
+       await this.clickElement(branchesBtn);
     }
 }
 module.exports = LandingPage;
