@@ -65,5 +65,6 @@ class BasePage {
         });
         return display;
     }
+
 }
 module.exports = BasePage;
