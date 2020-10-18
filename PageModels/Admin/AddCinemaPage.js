@@ -5,7 +5,7 @@ let cinemaNameField = By.css('input[formcontrolname="name"]');
 let nameRequiresMsg = By.css('div.text-danger span');
 let addButton = By.css('button[type="submit"]');
 let backLinkText = By.css('div.row > a');
-let addCinemaHeader = By.css('div[class="col-md-10"] h4');
+let addCinemaPageHeader = By.css('div[class="col-md-10"] h4');
 
 class AddCinemaPage extends BasePage {
 
@@ -23,7 +23,7 @@ class AddCinemaPage extends BasePage {
     }
 
     isPageLoaded = async () => {
-        await this.verifyPageLoad(cinemaNameField) && this.verifyPageLoad(addCinemaHeader);
+        await this.verifyPageLoad(cinemaNameField) && this.verifyPageLoad(addCinemaPageHeader);
     }
     
 }

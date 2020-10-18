@@ -1,14 +1,21 @@
 const { By, until } = require("selenium-webdriver");
 const BasePage = require("../BasePage");
 
+let nameField = By.css('input[formcontrolname="name"]');
 let rows = By.css('input[name="rows"]');
 let columns = By.css('input[name="columns"]');
 let seats = By.css('.seat span');
 let seatPlan = By.css('div[class="seat-plan"] span[hidden]');
 let updateButton = By.css('button.btn-primary');
 let backToList = By.partialLinkText('Back');
+let editCinemaPageHeader = By.css('div[class="col-md-10"] h4');
 
 class EditCinemaPage extends BasePage {
+
+    editCinemaName = async (cinemaName) => {
+        await nameField.clear();
+        await nameField.enterText(nameField, cinemaName);
+    }
 
     enterRows = async (rowValue) => {
         await rows.clear();
@@ -47,6 +54,10 @@ class EditCinemaPage extends BasePage {
         }   
 
         return seats;
+    }
+
+    isPageLoaded = async () => {
+        await this.verifyPageLoad(cinemaNameField) && this.verifyPageLoad(editCinemaPageHeader);
     }
 
 }
