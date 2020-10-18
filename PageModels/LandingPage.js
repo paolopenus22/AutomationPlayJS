@@ -3,6 +3,7 @@ let BasePage = require("../PageModels/BasePage");
 let loginBtn = By.css('a[href="/login"]');
 let registerBtn = By.css('a[href="/register"]');
 let branchesBtn = By.css('a[href="/branches"]');
+let adminBtn = By.css('a[href="/admin"]');
 
 class LandingPage extends BasePage {
 
@@ -17,6 +18,9 @@ class LandingPage extends BasePage {
     }
     clickBranchesTab = async () => {
        await this.clickElement(branchesBtn);
+    }
+    clickAdminTab = async () => {
+        await this.clickElement(adminBtn);
     }
 }
 module.exports = LandingPage;
