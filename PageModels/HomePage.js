@@ -3,8 +3,9 @@ const BasePage = require("../PageModels/BasePage");
 
 let moviesTab = By.css('a[href="/movies"]');
 let branchesTab = By.css('a[href="/branches"]');
-let loginTab = By.css('a[href="/login"]');
-let registerTab = By.css('a[href="/register"]');
+let adminTab = By.css('a[href="/admin"]');
+let logoutButton = By.css('button[class="btn btn-link nav-link"]');
+let userLoggedin = By.css('ul:nth-child(2) a[class="nav-link"]');
 let movieList = By.css('div[class="text-center"]:nth-child(2) a');
 let movieTrailerButton = By.css('div[class="text-center"]:nth-child(3) button:first-child');
 let getTicketButton = By.css('div[class="text-center"]:nth-child(3) button:nth-child(2)');
@@ -14,15 +15,18 @@ class HomePage extends BasePage {
     
     verifyMoviesTabisDisplayed = async () => {
         return await this.verifyPageLoad(moviesTab);
-    };
+    }
     verifyBrachesTabisDisplayed = async () => {
         return await this.verifyPageLoad(branchesTab);
-    };
-    verifyLoginTabisDisplayed = async () => {
-        return await this.verifyPageLoad(loginTab);
-    };
-    verifyRegisterTabisDisplayed = async () => {
-        return await this.verifyPageLoad(registerTab);
+    }
+    verifyAdminTabisDisplayed = async () => {
+        return await this.verifyPageLoad(adminTab);
+    }
+    verifyUserLoggedin = async () => {
+        return await this.getText(userLoggedin);
+    }
+    verifyLogoutButtonisDisplayed = async () => {
+        return await this.verifyPageLoad(logoutButton);
     }
     clickMoviesTab = async () => {
         await this.clickElement(moviesTab);
@@ -30,20 +34,28 @@ class HomePage extends BasePage {
     clickBranchesTab = async () => {
         await this.clickElement(branchesTab);
     }
-    clickLoginTab = async () => {
-        await this.clickElement(loginTab);
+    clickAdminTab = async () => {
+        await this.clickElement(adminTab);
     }
-    clickRegisterTab = async () => {
-        await this.clickElement(registerTab);
+    clickLogoutButton = async () => {
+        await this.clickElement(logoutButton);
     }
     checkMoviesAvailable = async (selectMovie, movieTime) => {
         let movies = await this.driver.findElements(movieList);
         let time = await this.driver.findElements(movieTimeSlot);
         for (let i = 0; i < movies.length; i++) {
             if (await movies[i].getText() === selectMovie && await time[i].getText() === movieTime) {
-                await movies[i].findElement(getTicketButton).click();
+                if (this.driver.findElement(getTicketButton)) {
+                    await getTicketButton.click();
+                } 
+                if (this.driver.findElement(movieTrailerButton)) {
+                    await movieTrailerButton.click();
+                }
             }
         }
+    }
+    isPageLoaded = async () => {
+        return await this.verifyPageLoad(adminTab);
     }
 }
 
