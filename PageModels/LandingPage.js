@@ -16,11 +16,5 @@ class LandingPage extends BasePage {
     isPageLoaded = async () => {
         return this.verifyPageLoad(loginBtn) && this.verifyPageLoad(registerBtn);
     }
-    clickBranchesTab = async () => {
-       await this.clickElement(branchesBtn);
-    }
-    clickAdminTab = async () => {
-        await this.clickElement(adminBtn);
-    }
 }
 module.exports = LandingPage;

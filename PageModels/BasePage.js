@@ -33,6 +33,7 @@ class BasePage {
         await this.driver.quit();
     }
     clickElement = async (el) => {
+        
         await this.driver.wait(until.elementLocated(el), 5000);
         let elem = await this.driver.findElement(el).then((x) => {
                     x.click();
@@ -47,9 +48,7 @@ class BasePage {
         return elem;
     }
     getText = async (el) => {
-        await this.driver.wait(until.elementLocated(el), 5000);
-        let elemText = await this.driver.findElement(el).getText();
-        return elemText;
+        return await this.driver.wait(until.elementLocated(el), 5000).getText();
     }
     verifyElementEnabled = async (el) => {
         await this.driver.wait(until.elementLocated(el), 5000);
@@ -60,11 +59,8 @@ class BasePage {
     }
     verifyPageLoad = async (el) => {
         await this.driver.wait(until.elementLocated(el), 5000);
-        let display = await this.driver.findElement(el).then((x) => {
-                    x.isDisplayed();
-        });
+        let display = await this.driver.findElement(el).isDisplayed();
         return display;
     }
-
 }
 module.exports = BasePage;
