@@ -1,6 +1,8 @@
 let LandingPage = require('../../PageModels/LandingPage');
 let LoginPage = require('../../PageModels/LoginPage');
+
 describe('Error messages for negative login scenarios', () => {
+    
     beforeEach(async () => {
         this.landingPage = new LandingPage();
         this.loginPage = new LoginPage();
@@ -44,14 +46,15 @@ describe('Error messages for negative login scenarios', () => {
         expect(getErrorMsg).toBe(errorMsg);
     });
     test('Verify error message when Users password is incorrect', async () => {     
-        let email = 'DoNotUse_NormalAcccount@mail.com';
+        let email = 'admin@admin.com';
         let invalidPassword =  '1234';
         let errorMsg = 'Incorrect password';
      
         await this.landingPage.isPageLoaded();
         await this.landingPage.clickLoginButton();
         await this.loginPage.isPageLoaded();        
-        await this.loginPage.inputLoginCredentials(email, invalidPassword);     
+        await this.loginPage.inputLoginCredentials(email, invalidPassword);  
+        await this.loginPage.clickLoginButton();   
         let getErrorMsg = await this.loginPage.getIncorrectPasswordErrorMessage();
         expect(getErrorMsg).toBe(errorMsg);
      

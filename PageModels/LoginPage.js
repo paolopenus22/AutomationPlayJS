@@ -1,8 +1,8 @@
 const { By, until } = require("selenium-webdriver");
 const BasePage = require("../PageModels/BasePage");
 
-let emailField = By.css('input[formcontrolname="email"]');
-let passwordField = By.css('input[formcontrolname="password"]');
+let emailField = By.css('.input-group-prepend + input[formcontrolname="email"]');
+let passwordField = By.css('.input-group-prepend + input[formcontrolname="password"]');
 let emailIcon = By.css('i[class="icon ion-ios-person"]');
 let passwordIcon = By.css('i[class="icon ion-ios-key"]');
 let invalidEmailMsg = By.css('[class="text-danger"] span');
@@ -15,6 +15,9 @@ class LoginPage extends BasePage {
     inputLoginCredentials = async (email, password) => {
         await this.enterText(emailField, email);
         await this.enterText(passwordField, password);
+       
+    }
+    clickLoginButton = async () => {
         await this.clickElement(loginButton);
     }
     getEmailErrorMessage = async () => {

@@ -28,6 +28,9 @@ class RegisterPage extends BasePage {
         await this.enterText(middleNameField, middleName);
         await this.enterText(lastNameField, lastName);
         await this.enterText(birthdayField, birthday);
+    }
+
+    clickRegisterButton = async () => {
         await this.clickElement(registerButton);
     }
     getEmailErrorMessage = async () => {

@@ -4,8 +4,8 @@ const BasePage = require("../PageModels/BasePage");
 let moviesTab = By.css('a[href="/movies"]');
 let branchesTab = By.css('a[href="/branches"]');
 let adminTab = By.css('a[href="/admin"]');
-let logoutButton = By.css('button[class="btn btn-link nav-link"]');
-let userLoggedin = By.css('ul:nth-child(2) a[class="nav-link"]');
+let logoutButton = By.css('.nav-item button');
+let userLoggedin = By.css('.navbar-nav:nth-of-type(2) a');
 let movieList = By.css('div[class="text-center"]:nth-child(2) a');
 let movieTrailerButton = By.css('div[class="text-center"]:nth-child(3) button:first-child');
 let getTicketButton = By.css('div[class="text-center"]:nth-child(3) button:nth-child(2)');
@@ -20,13 +20,20 @@ class HomePage extends BasePage {
         return await this.verifyPageLoad(branchesTab);
     }
     verifyAdminTabisDisplayed = async () => {
-        return await this.verifyPageLoad(adminTab);
+        try 
+        {
+            return await this.verifyPageLoad(adminTab);
+        } 
+        catch(e) {
+            console.log(e);
+            return false;
+        }
     }
     verifyUserLoggedin = async () => {
         return await this.getText(userLoggedin);
     }
     verifyLogoutButtonisDisplayed = async () => {
-        return await this.verifyPageLoad(logoutButton);
+        return await this.getText(logoutButton);
     }
     clickMoviesTab = async () => {
         await this.clickElement(moviesTab);
