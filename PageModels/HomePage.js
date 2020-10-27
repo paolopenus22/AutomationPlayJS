@@ -20,7 +20,14 @@ class HomePage extends BasePage {
         return await this.verifyPageLoad(branchesTab);
     }
     verifyAdminTabisDisplayed = async () => {
-        return await this.verifyPageLoad(adminTab);
+        try 
+        {
+            return await this.verifyPageLoad(adminTab);
+        } 
+        catch(e) {
+            console.log(e);
+            return false;
+        }
     }
     verifyUserLoggedin = async () => {
         return await this.getText(userLoggedin);

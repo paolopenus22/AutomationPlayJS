@@ -2,7 +2,6 @@ let LandingPage = require('../../PageModels/LandingPage');
 let RegisterPage = require('../../PageModels/RegisterPage');
 let LoginPage = require('../../PageModels/LoginPage');
 let HomePage = require('../../PageModels/HomePage');
-const { Browser } = require('selenium-webdriver');
 
 describe('Create an admin account', () => {
 
