@@ -4,7 +4,7 @@ let LoginPage = require('../../PageModels/LoginPage');
 let HomePage = require('../../PageModels/HomePage');
 
 describe('Create a normal account', () => {
-
+    
     beforeEach(async () => {
         this.landingPage = new LandingPage();
         this.registerPage = new RegisterPage();
@@ -15,7 +15,7 @@ describe('Create a normal account', () => {
     });
     test('Create normal user and verify login', async () => {
 
-        let userEmail = "Test3@yahoo.com";
+        let userEmail = "Test6@yahoo.com";
         let userPassword = "test123";
         let firstName = "Rowel";
         let middleName = "Olino";
@@ -36,13 +36,13 @@ describe('Create a normal account', () => {
 
     test('Create another normal user and verify login', async () => {
 
-        let userEmail = "Test4@yahoo.com";
+        let userEmail = "Test7@yahoo.com";
         let userPassword = "test123";
         let firstName = "Kim";
         let middleName = "Kim";
         let lastName = "Cofino";
         let birthDay = "2020-10-14";
-
+    
         await this.landingPage.clickRegisterButton();
         await this.registerPage.inputUserDetails(userEmail, userPassword, firstName, middleName, lastName, birthDay);
         await this.registerPage.clickRegisterButton();
