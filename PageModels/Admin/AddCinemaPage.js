@@ -23,8 +23,7 @@ class AddCinemaPage extends BasePage {
     }
 
     isPageLoaded = async () => {
-        await this.verifyPageLoad(cinemaNameField) && this.verifyPageLoad(addCinemaPageHeader);
+        await this.verifyPageLoad(addCinemaPageHeader) && this.verifyPageLoad(cinemaNameField);
     }
-    
 }
 module.exports = AddCinemaPage;
