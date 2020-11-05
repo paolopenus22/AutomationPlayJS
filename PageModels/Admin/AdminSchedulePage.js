@@ -34,7 +34,7 @@ class AdminSchedulePage extends BasePage {
         await this.clickElement(viewCinemaDropdown);
         let options = await this.driver.findElement(viewCinemaDropdown).findElements('option');
 
-        for(let i =0; i< options.lenth; i++)
+        for(let i =0; i< options.length; i++)
         {
             if(options[i].getText() == cinema)
             {
@@ -47,7 +47,7 @@ class AdminSchedulePage extends BasePage {
         await this.clickElement(itemsPerPage);
         let options = await this.driver.findElement(itemsPerPage).findElements('option');
 
-        for(let i =0; i< options.lenth; i++)
+        for(let i =0; i< options.length; i++)
         {
             if(options[i].getText() == num)
             {
