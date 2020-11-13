@@ -8,7 +8,7 @@ let nameErrorMsg = By.css('div[class="text-danger"] span');
 let addButton = By.css('button[type="submit"]');
 let backToListButton = By.css('a[href="/admin/branch"]');
 let branchesList = By.css('div[class="branch-card"] div:nth-child(2) a');
-let addBranchHeader = By.css('app-branch-add h4');
+let addBranchHeader = By.css('app-branch-list');
 
 class AddBranchPage extends BasePage {
     clickAddBranchButton = async () => {
@@ -27,10 +27,10 @@ class AddBranchPage extends BasePage {
     clickBackToList = async () => {
         await this.clickElement(backToListButton);
     }
-    getNewBranchName = async (name) => {
+    verifyNewBranchName = async () => {
         let branchList = await this.driver.findElements(branchesList);
         let newBranchName = '';
-        for(i = 0; i < branchList.length; i++) {
+        for(let i = 0; i < branchList.length; i++) {
             if (await branchList[i].getText() === name) {
                 newBranchName = branchList[i].getText();
             }
