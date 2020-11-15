@@ -16,7 +16,7 @@ describe('Add Branches by Admin', () => {
     });
 
     test('Add new branch', async () => {
-        let adminEmail = 'testqa11@admin.com';
+        let adminEmail = 'testqa41@admin.com';
         let adminPassword = '@dmin';
         let newBranch = 'Circuit Makati';
         let city = 'Makati City'
@@ -38,6 +38,8 @@ describe('Add Branches by Admin', () => {
         await this.addBranchPage.clickAddBranchButton();
         await this.addBranchPage.inputBranchDetails(newBranch, city);
         await this.addBranchPage.clickAddButton();
+        await this.addBranchPage.selectMaxTotalItems('18');
+        expect(await this.addBranchPage.verifyNewBranchName(newBranch)).toEqual(newBranch);
     });
 
     afterAll(async () => {

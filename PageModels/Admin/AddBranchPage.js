@@ -9,6 +9,7 @@ let addButton = By.css('button[type="submit"]');
 let backToListButton = By.css('a[href="/admin/branch"]');
 let branchesList = By.css('div[class="branch-card"] div:nth-child(2) a');
 let addBranchHeader = By.css('app-branch-list');
+let itemsPerPage = By.css('select[name="itemsPerPage"] option');
 
 class AddBranchPage extends BasePage {
     clickAddBranchButton = async () => {
@@ -27,15 +28,27 @@ class AddBranchPage extends BasePage {
     clickBackToList = async () => {
         await this.clickElement(backToListButton);
     }
-    verifyNewBranchName = async () => {
+    verifyNewBranchName = async (name) => {
         let branchList = await this.driver.findElements(branchesList);
         let newBranchName = '';
         for(let i = 0; i < branchList.length; i++) {
-            if (await branchList[i].getText() === name) {
-                newBranchName = branchList[i].getText();
+            const branchName = await branchList[i].getText();
+            if (branchName === name) {
+                newBranchName = branchName;
+                break;
             }
-            return newBranchName;
         }
+        return newBranchName;
+    }
+    selectMaxTotalItems = async (totalPage) => {
+        await this.clickElement(itemsPerPage);
+        const totalOptions = await this.driver.findElements(itemsPerPage);
+        for (let i = 0; i < totalOptions.length; i++) {
+            if (await totalOptions[i].getText() === totalPage) {
+                await totalOptions[i].click();
+            }
+        }
+        await this.driver.sleep(3000);
     }
     isPageLoaded = async () => {
         return await this.verifyPageLoad(addBranchHeader);
