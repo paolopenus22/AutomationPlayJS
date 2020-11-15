@@ -68,5 +68,14 @@ class AddSchedulePage extends BasePage {
         await this.clickElement(backToListLink);
     }
 
+    getCinemaNames = async () => {
+        await this.clickElement(cinemaDropdown);
+        return await this.getText(cinemaDropdown);
+    }   
+
+    isPageLoaded = async () => {
+        await this.verifyPageLoad(cinemaDropdown) && this.verifyPageLoad(movieDropdown);
+    }
+
 }
 module.exports = AddSchedulePage;

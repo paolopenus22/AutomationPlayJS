@@ -1,7 +1,7 @@
 const { By, until } = require("selenium-webdriver");
 const BasePage = require("../BasePage");
 
-let branchCard = By.css('app-admin app-branch-card');
+let branchCard = By.css('app-admin app-branch-list .branch-card');
 let branchName = By.css("app-admin app-branch-card a");
 let branchAddress = By.css("app-admin app-branch-card p");
 let checkScheduleBtn = By.css("app-admin app-branch-card [class='btn btn-info m-2']");
@@ -49,7 +49,7 @@ class AdminBranchPage extends BasePage {
         let cards = await this.driver.findElements(branchCard);            
         let index = Math.floor(Math.random() * cards.length);
 
-        await cards[index].findElement(branchLogo).click();
+        await cards[index].findElement(branchLogo).click();        
     }
     
     isPageLoaded = async () => {
