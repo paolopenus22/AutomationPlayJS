@@ -9,8 +9,6 @@ let seatPlan = By.css('div[class="seat-plan"] span[hidden]');
 let updateButton = By.css('button.btn-primary');
 let backToList = By.partialLinkText('Back');
 let editCinemaPageHeader = By.css('div[class="col-md-10"] h4');
-let addCinema = By.css('button[class="btn btn-outline-secondary mr-2"]');
-let cinemaList = By.css('app-cinema-list ul> li> a');
 
 class EditCinemaPage extends BasePage {
 
@@ -60,26 +58,6 @@ class EditCinemaPage extends BasePage {
 
     isPageLoaded = async () => {
         await this.verifyPageLoad(nameField) && this.verifyPageLoad(editCinemaPageHeader);
-    }
-
-    clickAddButton = async () => {
-        await this.clickElement(addCinema);
-    }
-
-    verifyCinema = async (name) => {        
-        let options = await this.driver.findElements(cinemaList);
-        let returnVal = false;
-
-        console.log(await options.length);
-
-        for (let index = 0; index < options.length; index++) {
-            
-            if (await options[index].getText() == ` ${name} `) {
-                returnVal = true;
-                break;
-            }
-        }        
-        return returnVal;
     }
 }
 
