@@ -3,8 +3,14 @@ let LoginPage = require('../../PageModels/LoginPage');
 let HomePage = require('../../PageModels/HomePage');
 let AdminPage = require('../../PageModels/Admin/AdminPage');
 let AddBranchPage = require('../../PageModels/Admin/AddBranchPage');
+let Utils = require('../../utils/cleanup');
 
 describe('Add Branches by Admin', () => {
+    let adminEmail = 'testqa41@admin.com';
+    let adminPassword = '@dmin';
+    let newBranch = 'Circuit Makati';
+    let city = 'Makati City'
+
     beforeEach(async () => {
         this.landingPage = new LandingPage();
         this.loginPage = new LoginPage();
@@ -16,11 +22,6 @@ describe('Add Branches by Admin', () => {
     });
 
     test('Add new branch', async () => {
-        let adminEmail = 'testqa41@admin.com';
-        let adminPassword = '@dmin';
-        let newBranch = 'Circuit Makati';
-        let city = 'Makati City'
-
         await this.landingPage.isPageLoaded();
         await this.landingPage.clickLoginButton();
         
@@ -44,5 +45,6 @@ describe('Add Branches by Admin', () => {
 
     afterAll(async () => {
         await this.landingPage.closeMoviesApp();
+        await this.cleanUp.deleteBranch(newBranch);
      });
 });
