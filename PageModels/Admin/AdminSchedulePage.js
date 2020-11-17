@@ -1,5 +1,6 @@
 const { By, until } = require("selenium-webdriver");
 const BasePage = require("../BasePage");
+const AddSchedulePage = require("../Admin/AddSchedulePage");
 
 let addMovieSchedBtn = By.css('app-schedule-list form button');
 let scheduleCard = By.css('app-schedule-card');
@@ -15,6 +16,7 @@ class AdminSchedulePage extends BasePage {
 
     AddMovieSchedule = async() => {
         await this.clickElement(addMovieSchedBtn);
+        return new AddSchedulePage();
     }
 
     deleteSchedule =async(name, schedule) => {        
@@ -62,6 +64,10 @@ class AdminSchedulePage extends BasePage {
 
     clickPreviousPagination = async() => {
         await this.clickElement(previousPagination);
+    }
+
+    isPageLoaded = async () => {
+        await this.verifyPageLoad(addMovieSchedBtn);
     }
 
 }
