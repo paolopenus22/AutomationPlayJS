@@ -46,10 +46,14 @@ class AdminBranchPage extends BasePage {
     }
 
     ClickRandomBranch = async() => {
+        let text = "";
         let cards = await this.driver.findElements(branchCard);            
         let index = Math.floor(Math.random() * cards.length);
 
+        text = cards[index].getText();
         await cards[index].findElement(branchLogo).click();
+        
+        return text;
     }
     
     isPageLoaded = async () => {
@@ -66,13 +70,14 @@ class AdminBranchPage extends BasePage {
 
     itemPerPage = async(num) => {
         await this.clickElement(itemsPerPage);
-        let options = await this.driver.findElement(itemsPerPage).findElements('option');
+        let options = await this.driver.findElement(itemsPerPage)
+        let selectedOption = await options.findElements(By.css('option'));
 
-        for(let i =0; i< options.length; i++)
+        for(let i =0; i< selectedOption.length; i++)
         {
-            if(options[i].getText() == num)
+            if(selectedOption[i].getText() == num)
             {
-                await options[i].click();
+                await selectedOption[i].click();
             }
         }
     }
