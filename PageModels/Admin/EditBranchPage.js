@@ -10,6 +10,8 @@ let cinemaLinks = By.css('app-cinema-list > ul');
 let backLinkText = By.css('a[href="/admin/branch"]');
 let editBranchHeader = By.css('app-branch-edit h4');
 let cinemaHeader = By.css('app-cinema-list h4');
+let addCinema = By.css('button[class="btn btn-outline-secondary mr-2"]');
+let cinemaList = By.css('h4 + ul');
 
 
 class EditBranchPage extends BasePage {
