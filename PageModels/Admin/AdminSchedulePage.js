@@ -4,6 +4,7 @@ const AddSchedulePage = require("../Admin/AddSchedulePage");
 
 let addMovieSchedBtn = By.css('app-schedule-list form button');
 let scheduleCards = By.css('div.row-eq-height');
+let scheduleCard = By.css('app-schedule-card');
 let movieName = By.css('app-schedule-card h6');
 let dateTime = By.css('app-schedule-card p');
 let deleteIcon = By.css('i[class="icon ion-ios-trash"]');
