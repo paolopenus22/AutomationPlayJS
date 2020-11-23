@@ -1,5 +1,6 @@
 const { By, until } = require("selenium-webdriver");
 const BasePage = require("../BasePage");
+const AddSchedulePage = require("../Admin/AddSchedulePage");
 
 let addMovieSchedBtn = By.css('app-schedule-list form button');
 let scheduleCards = By.css('div.row-eq-height');
@@ -15,6 +16,7 @@ class AdminSchedulePage extends BasePage {
 
     AddMovieSchedule = async() => {
         await this.clickElement(addMovieSchedBtn);
+        return new AddSchedulePage();
     }
 
     deleteSchedule =async(name, schedule) => {        
@@ -96,7 +98,8 @@ class AdminSchedulePage extends BasePage {
     }
 
     isPageLoaded = async () => {
-        await this.verifyPageLoad(dropdownLabels)
+        await this.verifyPageLoad(addMovieSchedBtn);
     }
+
 }
 module.exports = AdminSchedulePage;

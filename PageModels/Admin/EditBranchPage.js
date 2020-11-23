@@ -24,6 +24,7 @@ class EditBranchPage extends BasePage {
 
     clickViewSchedules = async () => {
         await this.clickElement(viewSchedulesBtn);
+        return new AdminSchedulePage();
     }
 
     isCinemaDisplayed = async (cinemaName) => {
@@ -67,10 +68,18 @@ class EditBranchPage extends BasePage {
         return cinemaLinkName;
     }
 
-    isPageLoaded = async () => {
-        await this.verifyPageLoad(editBranchHeader) && this.verifyPageLoad(cinemaHeader)
+    clickAddButton = async () => {
+        await this.clickElement(addCinema);
+        return new AddCinemaPage();
     }
 
+    verifyCinema = async () => {               
+        return await this.getText(cinemaList);
+    }
+
+    isPageLoaded = async () => {
+        await this.verifyPageLoad(addCinema) && this.verifyPageLoad(cinemaList);
+    }
 }
 
 
