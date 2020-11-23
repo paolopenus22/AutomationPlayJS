@@ -2,14 +2,14 @@ const { By, until } = require("selenium-webdriver");
 const BasePage = require("../BasePage");
 const BranchesPage = require("../BranchesPage");
 const EditCinemaPage = require("../Admin/EditCinemaPage");
-const AdminSchedulePage = require("../Admin/AdminSchedulePage");
-const AddCinemaPage = require("../Admin/AddCinemaPage");
 
 let updateBtn = By.css('button[type="submit"]');
 let addCinemaBtn = By.css('button.btn-outline-secondary');
 let viewSchedulesBtn = By.css('button.btn-outline-info');
-let cinemaLinks = By.css('a[href*="/admin/branch/"]');
+let cinemaLinks = By.css('app-cinema-list > ul');
 let backLinkText = By.css('a[href="/admin/branch"]');
+let editBranchHeader = By.css('app-branch-edit h4');
+let cinemaHeader = By.css('app-cinema-list h4');
 let addCinema = By.css('button[class="btn btn-outline-secondary mr-2"]');
 let cinemaList = By.css('h4 + ul');
 
@@ -40,7 +40,13 @@ class EditBranchPage extends BasePage {
     }
 
     getCinemasCount = async () => {
-        return await this.driver.findElement(cinemaLinks).count();
+        let count = 0;
+        await this.driver.wait(until.elementLocated(cinemaLinks), 5000);
+        let cinemas = await this.driver.findElement(cinemaLinks);
+        await cinemas.findElements(By.css('li > a')).then((elements) => {
+            count = elements.length;    
+        });
+        return count;
     }
 
     clickCinemaLink = async (cinemaName) => {

@@ -3,15 +3,16 @@ const BasePage = require("../BasePage");
 const AddSchedulePage = require("../Admin/AddSchedulePage");
 
 let addMovieSchedBtn = By.css('app-schedule-list form button');
+let scheduleCards = By.css('div.row-eq-height');
 let scheduleCard = By.css('app-schedule-card');
 let movieName = By.css('app-schedule-card h6');
 let dateTime = By.css('app-schedule-card p');
 let deleteIcon = By.css('i[class="icon ion-ios-trash"]');
-let viewCinemaDropdown = By.css('app-schedule-list form [name="cinema"]');
+let viewCinemaDropdown = By.css('select[name="cinema"]');
 let itemsPerPage = By.css('app-schedule-list form [name="itemsPerPage"]');
 let nextPagination = By.css('pagination-template [class="pagination-next"]');
 let previousPagination = By.css('pagination-template [class="pagination-previous"]');
-
+let dropdownLabels = By.css('app-schedule-list form label');
 class AdminSchedulePage extends BasePage {
 
     AddMovieSchedule = async() => {
@@ -33,29 +34,60 @@ class AdminSchedulePage extends BasePage {
     }
 
     viewSpecificCinema = async(cinema) => {
+        let text = ""
         await this.clickElement(viewCinemaDropdown);
-        let options = await this.driver.findElement(viewCinemaDropdown).findElements('option');
-
-        for(let i =0; i< options.length; i++)
-        {
-            if(options[i].getText() == cinema)
-            {
-                await options[i].click();
+        let dropdownElement = await this.driver.findElement(viewCinemaDropdown);
+        let dropdownElements = await dropdownElement.findElements(By.css('option'));
+        for (let i = 1; i < dropdownElements.length; i++) {
+             text = await dropdownElements[i].getText();
+            if (dropdownElements[i].getText() == cinema) {
+                await dropdownElements[i].click();
             }
         }
+        return text;
     }
 
     itemPerPage = async(num) => {
         await this.clickElement(itemsPerPage);
-        let options = await this.driver.findElement(itemsPerPage).findElements('option');
+        let options = await this.driver.findElement(itemsPerPage)
+        let selectedOption = await options.findElements(By.css('option'));
 
-        for(let i =0; i< options.length; i++)
+        for(let i =0; i< selectedOption.length; i++)
         {
-            if(options[i].getText() == num)
+            if(selectedOption[i].getText() == num)
             {
-                await options[i].click();
+                await selectedOption[i].click();
             }
         }
+    }
+
+    verifyIsMovieAdded = async (movieTitle) => {
+        let isPresent = false;
+        await this.driver.wait(until.elementLocated(scheduleCards), 5000);
+        let element = await this.driver.findElement(scheduleCards);
+        let listOfScheduleCards = await element.findElements(By.css('div.schedule-card h6'));
+        let arrCard = [];
+
+        for (let i = 0; i < listOfScheduleCards.length; i++) {
+
+            let arrCardText = await listOfScheduleCards[i].getText();
+            arrCard.push(arrCardText);
+
+            if (arrCard.includes(movieTitle)) {
+                isPresent = true;
+                break;
+            }
+        }
+
+        console.log(arrCard);
+        
+        return isPresent;
+        
+    }
+
+    getCurrentUrl = async () => {
+        let currentUrl = await this.driver.getCurrentUrl();
+        return currentUrl;
     }
 
     clickNextPagination = async() => {
