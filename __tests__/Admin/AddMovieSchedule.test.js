@@ -11,10 +11,10 @@ let AddSchedulePage = require('../../PageModels/Admin/AddSchedulePage');
 
 describe('Add Cinema by Admin', () => {
 
-    let email = 'DoNotUse_AdminAccount@admin.com';
-    let validPassword =  'password123';
-    const cinemaNumber = Math.floor(Math.random() * 100);
-    const cinemaName = 'Cinema ' + cinemaNumber;
+    let adminEmail = 'DoNotUse_AdminAccount@admin.com';
+    let adminPassword =  'password123';
+    let cinemaNumber = Math.floor(Math.random() * 100);
+    let cinemaName = 'Cinema ' + cinemaNumber + 1;
 
 
     beforeEach(async () => {
@@ -29,6 +29,7 @@ describe('Add Cinema by Admin', () => {
         this.adminSchedulePage = new AdminSchedulePage();
         this.addSchedulePage = new AddSchedulePage();
 
+        this.cleanUp = new Utils();
         jest.setTimeout(40000);
         await this.landingPage.navigateToMoviesApp();
     });
@@ -39,7 +40,7 @@ describe('Add Cinema by Admin', () => {
         await this.landingPage.clickLoginButton();
 
         await this.loginPage.isPageLoaded();        
-        await this.loginPage.inputLoginCredentials(email, validPassword);  
+        await this.loginPage.inputLoginCredentials(adminEmail, adminPassword);  
         await this.loginPage.clickLoginButton();
 
         // Navigate to admin tab
@@ -93,7 +94,7 @@ describe('Add Cinema by Admin', () => {
         await this.adminSchedulePage.isPageLoaded();
 
         await this.adminSchedulePage.itemPerPage('18');
-        let filterCinema = await this.adminSchedulePage.viewSpecificCinema(selectedCinema);
+        await this.adminSchedulePage.viewSpecificCinema(selectedCinema);
 
 
         expect(await this.adminSchedulePage.verifyIsMovieAdded(movieName.trim())).toBe(true)
@@ -102,5 +103,7 @@ describe('Add Cinema by Admin', () => {
 
     afterAll(async () => {
         await this.landingPage.closeMoviesApp();
+        await this.cleanup.deleteUser(adminEmail);
+        await this.cleanup.deleteCinema(cinemaName)
      });
 });
