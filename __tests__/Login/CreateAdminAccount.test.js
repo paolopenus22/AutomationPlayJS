@@ -27,7 +27,6 @@ describe('Create an admin account', () => {
     test('Create admin account and verify login', async () => {
         await this.landingPage.clickRegisterButton();
         await this.registerPage.inputUserDetails(adminEmail, adminPassword, adminFirstName, adminMiddleName, adminLastName, adminBday);
-        console.log(await adminBday);
         await this.registerPage.clickRegisterButton();
         await this.loginPage.inputLoginCredentials(adminEmail, adminPassword);
         await this.loginPage.clickLoginButton();
