@@ -3,23 +3,25 @@ let RegisterPage = require('../../PageModels/RegisterPage');
 let LoginPage = require('../../PageModels/LoginPage');
 let HomePage = require('../../PageModels/HomePage');
 let Utils = require('../../utils/cleanup');
+let faker = require('faker');
 
 describe('Create a normal account', () => {
+
     // test # 1
-    let userEmail = "Test12@yahoo.com";
-    let userPassword = "test123";
-    let firstName = "Rowel";
-    let middleName = "Olino";
-    let lastName = "Libunao";
-    let birthDay = "2020-10-14";
+    let firstName = faker.name.firstName();
+    let middleName = faker.name.lastName();
+    let lastName = faker.name.lastName();
+    let userEmail = firstName + lastName + '@gmail.com';
+    let userPassword = faker.internet.password();
+    let birthDay = faker.date.past(40).toISOString()
 
     //test # 2
-    let userEmail2 = "Test13@yahoo.com";
-    let userPassword2 = "test123";
-    let firstName2 = "Kim";
-    let middleName2 = "Kim";
-    let lastName2 = "Cofino";
-    let birthDay2 = "2020-10-14";
+    let firstName2 = faker.name.firstName();
+    let middleName2 = faker.name.lastName();
+    let lastName2 = faker.name.lastName();
+    let userEmail2 = firstName2 + lastName2 + '@gmail.com';
+    let userPassword2 = faker.internet.password();
+    let birthDay2 = faker.date.past(40).toISOString()
     
     beforeEach(async () => {
         this.landingPage = new LandingPage();
