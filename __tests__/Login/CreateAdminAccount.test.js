@@ -3,15 +3,16 @@ let RegisterPage = require('../../PageModels/RegisterPage');
 let LoginPage = require('../../PageModels/LoginPage');
 let HomePage = require('../../PageModels/HomePage');
 let Utils = require('../../utils/cleanup');
+let faker = require('faker');
 
 describe('Create an admin account', () => {
 
-    let adminEmail = 'testqa41@admin.com';
-    let adminPassword = '@dmin';
-    let adminFirstName = 'Anne';
-    let adminMiddleName = 'Gonzales';
-    let adminLastName = 'Macabale';
-    let adminBday = '1994-10-11';
+    let adminFirstName = faker.name.firstName();
+    let adminMiddleName = faker.name.lastName();
+    let adminLastName = faker.name.lastName();
+    let adminEmail = adminFirstName + adminLastName + '@admin.com';
+    let adminPassword = faker.internet.password();
+    let adminBday = faker.date.past(40).toISOString();
 
     beforeEach(async () => {
         this.landingPage = new LandingPage();

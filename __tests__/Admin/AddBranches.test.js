@@ -4,12 +4,13 @@ let HomePage = require('../../PageModels/HomePage');
 let AdminPage = require('../../PageModels/Admin/AdminPage');
 let AddBranchPage = require('../../PageModels/Admin/AddBranchPage');
 let Utils = require('../../utils/cleanup');
+let faker = require('faker');
 
 describe('Add Branches by Admin', () => {
-    let adminEmail = 'testqa41@admin.com';
-    let adminPassword = '@dmin';
-    let newBranch = 'Circuit Makati';
-    let city = 'Makati City'
+    let adminEmail = 'admin@admin.com';
+    let adminPassword = 'password';
+    let city = faker.address.city();
+    let newBranch = 'SM ' + city;
 
     beforeEach(async () => {
         this.landingPage = new LandingPage();
@@ -17,6 +18,7 @@ describe('Add Branches by Admin', () => {
         this.homePage = new HomePage();
         this.adminPage = new AdminPage();
         this.addBranchPage = new AddBranchPage();
+        this.cleanUp = new Utils();
         jest.setTimeout(40000);
         await this.landingPage.navigateToMoviesApp();
     });
