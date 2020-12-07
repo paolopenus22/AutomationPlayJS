@@ -2,6 +2,7 @@ const { By, until } = require("selenium-webdriver");
 const BasePage = require("../BasePage");
 const BranchesPage = require("../BranchesPage");
 const EditCinemaPage = require("../Admin/EditCinemaPage");
+const AddCinemaPage = require("../Admin/AddCinemaPage");
 
 let updateBtn = By.css('button[type="submit"]');
 let addCinemaBtn = By.css('button.btn-outline-secondary');
@@ -12,6 +13,7 @@ let editBranchHeader = By.css('app-branch-edit h4');
 let cinemaHeader = By.css('app-cinema-list h4');
 let addCinema = By.css('button[class="btn btn-outline-secondary mr-2"]');
 let cinemaList = By.css('h4 + ul');
+let cinemaItems = By.css('h4 + ul > li > a');
 
 
 class EditBranchPage extends BasePage {
@@ -49,14 +51,16 @@ class EditBranchPage extends BasePage {
         return count;
     }
 
-    clickCinemaLink = async (cinemaName) => {
-        let cinemaList = await this.driver.findElement(cinemaLinks);
-        for (let index = 0; index < cinemaList.length; index++) {
-            if (await cinemaName.includes(cinemaList[index])) {
-                await cinemaList[index].click();
-            }           
+    clickCinemaLink = async (cinemaName) => {        
+        let list = await this.driver.findElements(cinemaItems);            
+        for(let i = 0; i < list.length; i++)
+        {
+            if(await list[i].getText() == `${cinemaName}`)
+            {
+                await list[i].click();
+                return new EditCinemaPage();
+            }
         }
-        return new EditCinemaPage();
     }
 
     getCinemaName = async (cinemaName) => {
@@ -81,6 +85,20 @@ class EditBranchPage extends BasePage {
 
     isPageLoaded = async () => {
         await this.verifyPageLoad(addCinema) && this.verifyPageLoad(cinemaList);
+        return new EditBranchPage();
+    }
+
+    isPageLoadedBack = async () => {
+        await this.driver.wait(until.elementLocated(addCinema), 10000);
+        return this.verifyPageLoad(addCinema) && this.verifyPageLoad(cinemaList);
+    }
+
+    clickRandomCinemaLink = async () => {
+        let items = await this.driver.findElements(cinemaItems);
+        let index = Math.floor(Math.random() * items.length);
+
+        await items[index].click();
+        return new EditCinemaPage();
     }
 }
 

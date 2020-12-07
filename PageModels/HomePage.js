@@ -1,5 +1,6 @@
 const { By, until } = require("selenium-webdriver");
 const BasePage = require("../PageModels/BasePage");
+const AdminPage = require("../PageModels/Admin/AdminPage");
 
 let moviesTab = By.css('a[href="/movies"]');
 let branchesTab = By.css('a[href="/branches"]');
@@ -43,6 +44,7 @@ class HomePage extends BasePage {
     }
     clickAdminTab = async () => {
         await this.clickElement(adminTab);
+        return new AdminPage();
     }
     clickLogoutButton = async () => {
         await this.clickElement(logoutButton);

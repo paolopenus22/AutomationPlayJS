@@ -1,8 +1,9 @@
 const { By, until } = require("selenium-webdriver");
 const BasePage = require("../BasePage");
+const EditBranchPage = require("../Admin/EditBranchPage");
 
 let branchCard = By.css('app-admin app-branch-list .branch-card');
-let branchName = By.css("app-admin app-branch-card a");
+let branchName = By.css("div:nth-child(2) a");
 let branchAddress = By.css("app-admin app-branch-card p");
 let checkScheduleBtn = By.css("app-admin app-branch-card [class='btn btn-info m-2']");
 let branchTextBox = By.css('app-admin [id="txtSearchBranch"]');
@@ -45,19 +46,19 @@ class AdminBranchPage extends BasePage {
         await cards[index].findElement(checkScheduleBtn).click();
     }
 
-    ClickRandomBranch = async() => {
-        let text = "";
+    ClickRandomBranch = async() => {     
+        await this.driver.wait(until.elementLocated(branchCard), 10000);
         let cards = await this.driver.findElements(branchCard);            
         let index = Math.floor(Math.random() * cards.length);
 
-        text = cards[index].getText();
+        await this.driver.wait(until.elementLocated(branchLogo), 10000);
         await cards[index].findElement(branchLogo).click();
         
-        return text;
+        return new EditBranchPage();
     }
     
     isPageLoaded = async () => {
-        await this.verifyPageLoad(branchLogo) && this.verifyPageLoad(branchCard);
+        this.verifyPageLoad(branchLogo) && this.verifyPageLoad(branchCard);
     }
 
     SearchForBranchName = async (name) => {

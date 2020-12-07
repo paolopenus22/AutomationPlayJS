@@ -78,8 +78,6 @@ class AdminSchedulePage extends BasePage {
                 break;
             }
         }
-
-        console.log(arrCard);
         
         return isPresent;
         
