@@ -1,6 +1,5 @@
 const { By, until } = require("selenium-webdriver");
 const BasePage = require("../BasePage");
-const EditBranchPage = require("../Admin/EditBranchPage");
 
 let cinemaNameField = By.css('input[formcontrolname="name"]');
 let nameRequiresMsg = By.css('div.text-danger span');
@@ -13,7 +12,6 @@ class AddCinemaPage extends BasePage {
     inputCinemaName = async (cinemaName) => {
         await this.enterText(cinemaNameField, cinemaName);
         await this.clickElement(addButton);
-        //return new EditBranchPage();
     }
     
     getRequiredNameErrorMessage = async () => {
