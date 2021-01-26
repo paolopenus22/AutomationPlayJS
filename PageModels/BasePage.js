@@ -34,7 +34,7 @@ class BasePage {
     }
     clickElement = async (el) => {
         
-        await this.driver.wait(until.elementLocated(el), 5000);
+        await this.driver.wait(until.elementLocated(el), 50000);
         let elem = await this.driver.findElement(el).then((x) => {
                     x.click();
         });

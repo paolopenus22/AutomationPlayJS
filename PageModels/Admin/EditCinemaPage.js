@@ -47,7 +47,7 @@ class EditCinemaPage extends BasePage {
             }
         }
     }
-
+    
     getDisabledSeats = async () => {
         let seats = [];
         let seatsDisabled = await driver.findElements(seatPlan);
