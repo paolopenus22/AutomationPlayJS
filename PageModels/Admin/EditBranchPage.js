@@ -3,6 +3,7 @@ const BasePage = require("../BasePage");
 const BranchesPage = require("../BranchesPage");
 const EditCinemaPage = require("../Admin/EditCinemaPage");
 const AddCinemaPage = require("../Admin/AddCinemaPage");
+const AdminSchedulePage = require("../Admin/AdminSchedulePage");
 
 let updateBtn = By.css('button[type="submit"]');
 let addCinemaBtn = By.css('button.btn-outline-secondary');

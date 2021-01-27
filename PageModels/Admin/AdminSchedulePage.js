@@ -1,23 +1,26 @@
-const { By, until } = require("selenium-webdriver");
+const { By, until, promise } = require("selenium-webdriver");
 const BasePage = require("../BasePage");
 const AddSchedulePage = require("../Admin/AddSchedulePage");
 
 let addMovieSchedBtn = By.css('app-schedule-list form button');
-let scheduleCards = By.css('div.row-eq-height');
+let movieScheduleContainer = By.css('div.row-eq-height');
+let schedCard = By.css('div.schedule-card');
 let scheduleCard = By.css('app-schedule-card');
 let movieName = By.css('app-schedule-card h6');
 let dateTime = By.css('app-schedule-card p');
 let deleteIcon = By.css('i[class="icon ion-ios-trash"]');
-let viewCinemaDropdown = By.css('select[name="cinema"]');
+let viewCinemaDropdown = By.css('select[name="cinema"] option');
 let itemsPerPage = By.css('app-schedule-list form [name="itemsPerPage"]');
 let nextPagination = By.css('pagination-template [class="pagination-next"]');
 let previousPagination = By.css('pagination-template [class="pagination-previous"]');
-let dropdownLabels = By.css('app-schedule-list form label');
+
+
 class AdminSchedulePage extends BasePage {
 
     AddMovieSchedule = async() => {
+        await this.driver.wait(until.elementLocated(addMovieSchedBtn), 50000);
         await this.clickElement(addMovieSchedBtn);
-        return new AddSchedulePage();
+        // return new AdminSchedulePage();
     }
 
     deleteSchedule =async(name, schedule) => {        
@@ -34,53 +37,98 @@ class AdminSchedulePage extends BasePage {
     }
 
     viewSpecificCinema = async(cinema) => {
-        let text = ""
-        await this.clickElement(viewCinemaDropdown);
-        let dropdownElement = await this.driver.findElement(viewCinemaDropdown);
-        let dropdownElements = await dropdownElement.findElements(By.css('option'));
-        for (let i = 1; i < dropdownElements.length; i++) {
-             text = await dropdownElements[i].getText();
-            if (dropdownElements[i].getText() == cinema) {
-                await dropdownElements[i].click();
+
+        await this.driver.wait(until.elementLocated(viewCinemaDropdown), 50000)
+        let dropdownElement = await this.driver.findElements(viewCinemaDropdown);
+        
+
+        for (let i = 0; i < dropdownElement.length; i++) {
+
+           let text = await dropdownElement[i].getText();
+
+            if (text.trim().includes(cinema)) {
+                await dropdownElement[i].click();
+                break;
             }
         }
-        return text;
     }
 
-    itemPerPage = async(num) => {
-        await this.clickElement(itemsPerPage);
+    verifyIfElementExist = async() => {
+        try {
+            await this.driver.findElement(scheduleCard);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+
+    itemPerPage = async() => {
         let options = await this.driver.findElement(itemsPerPage)
         let selectedOption = await options.findElements(By.css('option'));
 
-        for(let i =0; i< selectedOption.length; i++)
+        for(let i = 0; i < selectedOption.length; i++)
         {
-            if(selectedOption[i].getText() == num)
+            // let text = await selectedOption[i].getText();
+            if(await selectedOption[i].getText() == `18`)
             {
                 await selectedOption[i].click();
             }
         }
     }
 
-    verifyIsMovieAdded = async (movieTitle) => {
-        let isPresent = false;
-        await this.driver.wait(until.elementLocated(scheduleCards), 5000);
-        let element = await this.driver.findElement(scheduleCards);
-        let listOfScheduleCards = await element.findElements(By.css('div.schedule-card h6'));
-        let arrCard = [];
+    getSelectedMovieTitles = async(movieTitle) => {
+        let listOfTitles = [];
 
-        for (let i = 0; i < listOfScheduleCards.length; i++) {
+        listOfTitles.push(movieTitle);
 
-            let arrCardText = await listOfScheduleCards[i].getText();
-            arrCard.push(arrCardText);
+        return listOfTitles;
+    }
 
-            if (arrCard.includes(movieTitle)) {
-                isPresent = true;
-                break;
-            }
+    formatDate = async(movieDate, movieTime) => {
+        let timeValues = movieTime.split(':');
+        let hourValue = "";
+
+        if(timeValues[2] == "pm"){
+            let integerHour = parseInt(timeValues[0]);
+            hourValue = integerHour - 12;
+            hourValue = `0${hourValue}`;
+        }else {
+            hourValue = timeValues[0];
         }
-        
-        return isPresent;
-        
+
+        let scheduleTobeChecked = movieDate + ' ' + hourValue + ':' + timeValues[1] + ' ' + timeValues[2];
+
+        return scheduleTobeChecked;
+    }
+
+    verifyAddedMovieSchedule= async (movieTitle) => {
+        let isDisplayed = false;
+        let scheduleCardMovieTitle = "";
+
+        await this.driver.wait(until.elementsLocated(movieName), 5000);
+        let listOfScheduleCards = await this.driver.findElements(movieName);
+    
+        for (let i = 0; i <  listOfScheduleCards.length; i++) {
+
+            scheduleCardMovieTitle = await listOfScheduleCards[i].getText();
+
+            if (scheduleCardMovieTitle.trim() == movieTitle.trim()) {
+                isDisplayed = true;
+                break;
+            }   
+        }     
+        return isDisplayed;
+    }
+
+    getMovieScheduleCount = async() => {
+        let count = 0
+        await this.driver.wait(until.elementsLocated(movieScheduleContainer), 5000);
+        let scheduleContainer = await this.driver.findElement(movieScheduleContainer);
+        await scheduleContainer.findElements(scheduleCard).then((index) => {
+            count = index.length;
+        });
+        return count;
     }
 
     getCurrentUrl = async () => {
@@ -97,7 +145,7 @@ class AdminSchedulePage extends BasePage {
     }
 
     isPageLoaded = async () => {
-        await this.verifyPageLoad(addMovieSchedBtn);
+        await this.verifyPageLoad(movieName) || await this.verifyPageLoad(addMovieSchedBtn);
     }
 
 }
