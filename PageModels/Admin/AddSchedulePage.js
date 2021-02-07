@@ -17,7 +17,8 @@ class AddSchedulePage extends BasePage {
 
     selectCinemaName = async (cinemaName) => {
 
-        await this.driver.wait(until.elementsLocated(cinemaDropdown), 50000)
+        await this.clickElement(cinemaDropdown);
+        await this.driver.wait(until.elementsLocated(cinemaDropdown), 50000);
         let options = await this.driver.findElements(cinemaOptions);
         // let selectedOption = await options.findElements(By.css('option'));
 
@@ -115,10 +116,10 @@ class AddSchedulePage extends BasePage {
         await this.enterStartDate(startDate);
 
         await this.driver.findElement(hourInput).clear();
-        await this.enterText(hourInput, hr)
+        await this.enterText(hourInput, hr);
 
         await this.driver.findElement(minInput).clear();
-        await this.enterText(minInput, min)
+        await this.enterText(minInput, min);
 
         await this.enterTicketPrice(price);
     }

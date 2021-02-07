@@ -3,9 +3,9 @@ const BasePage = require("../BasePage");
 const EditBranchPage = require("../Admin/EditBranchPage");
 
 let branchCard = By.css('app-admin app-branch-list .branch-card');
-let branchName = By.css("div:nth-child(2) a");
+let branchName = By.css("app-admin app-branch-list .branch-card div:nth-child(2) a");
 let branchAddress = By.css("app-admin app-branch-card p");
-let checkScheduleBtn = By.css("app-admin app-branch-card [class='btn btn-info m-2']");
+let checkScheduleBtn = By.css("[class='btn btn-info m-2']");
 let branchTextBox = By.css('app-admin [id="txtSearchBranch"]');
 let branchSearchDropDown = By.css('app-admin ngb-typeahead-window ngb-highlight');
 let itemsPerPage = By.css('app-admin form [name="itemsPerPage"]');
@@ -16,9 +16,11 @@ let branchLogo = By.css('div.text-center a img');
 class AdminBranchPage extends BasePage {
 
     CheckScheduleOfBranchName = async(name) => {
-        let cards = await this.driver.findElements(branchCard);
+        await this.driver.wait(until.elementLocated(branchCard), 10000);
+        let cards = await this.driver.findElements(branchCard);   
+        console.log(cards.length);
         for(let i = 0; i < cards.length; i++)
-        {
+        {       
             if(await cards[i].findElement(branchName).getText() === name)
             {
                 await cards[i].findElement(checkScheduleBtn).click();
@@ -89,6 +91,19 @@ class AdminBranchPage extends BasePage {
 
     clickPreviousPagination = async() => {
         await this.clickElement(previousPagination);
+    }
+
+    clickBranchNameLogo = async(name) => {     
+        let cards = await this.driver.findElements(branchCard);            
+        for(let i = 0; i < cards.length; i++)
+        {
+            if(await cards[i].findElement(branchName).getText() === name)
+            {
+                await cards[i].findElement(branchLogo).click();
+                break;
+            }
+        }        
+        return new EditBranchPage();
     }
 
 }

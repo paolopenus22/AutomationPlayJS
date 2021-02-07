@@ -29,7 +29,7 @@ describe('Manage Cinema Seat Plan', () => {
         await this.landingPage.navigateToMoviesApp();
     });
 
-    test('Add new branch', async () => {
+    test('Seat plan', async () => {
         await this.landingPage.isPageLoaded();
         await this.landingPage.clickLoginButton();
 

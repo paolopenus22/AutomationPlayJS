@@ -12,6 +12,8 @@ let creditCardNumErrorMsg = By.css('div.row:nth-child(2) span[class="ng-star-ins
 let cvvErrorMsg = By.css('div.row:nth-child(3) span[class="ng-star-inserted"]');
 let expiryDateErrorMsg = By.css('div.row:nth-child(4) span[class="ng-star-inserted"]');
 let closeButton = By.css('button[class="btn btn-primary m-2"]');
+let description = By.css('app-payment-summary  div:nth-child(2) > div:nth-child(2)');
+let amount = By.css('app-payment-summary div:nth-child(3) > div:nth-child(2)');
 
 class PaymentSummaryPage extends BasePage {
     inputPaymentDetails = async (cardHolderName, creditCardNum, cvv, expiryDate) => {
@@ -39,11 +41,20 @@ class PaymentSummaryPage extends BasePage {
         return await this.getText(confirmedReservationPopUp);
     }
     clickCloseButton = async () => {
+        await this.driver.wait(until.elementsLocated(closeButton), 50000);
         await this.clickElement(closeButton);
     }
     isPageLoaded = async () => {
         return await this.verifyPageLoad(cardholderNameField);
     }
+
+    getDescription = async () => {
+        return await description.getText();
+    }
+    getTotalAmount = async () => {
+        return await amount.getText();
+    }
+
 }
 
 module.exports = PaymentSummaryPage;

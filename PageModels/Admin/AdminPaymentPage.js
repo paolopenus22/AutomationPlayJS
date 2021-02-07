@@ -64,6 +64,20 @@ class AdminPaymentPage extends BasePage
     getAmount = async() => {
         return await amount.getText();
     }
+
+    ClickTransactionDateByDescription = async(desc) => 
+    {
+        let date = await this.driver.findElements(transactionDate);
+        let description = await this.driver.findElements(description);
+        for(let i = 0; i < description.length; i++)
+        {
+            if(await description[i].getText() === desc)
+            {
+                await date[i].click();
+                break;
+            }
+        }
+    }
 }
 
 module.exports = AdminPaymentPage;

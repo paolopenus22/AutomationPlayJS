@@ -1,11 +1,11 @@
 const { By, until } = require("selenium-webdriver");
 const BasePage = require("../PageModels/BasePage");
 
-let selectBranch = By.css('#mat-select-4');
-let selectCinema = By.css('#mat-select-5');
-let chooseADate = By.css('#mat-select-6');
-let selectTime = By.css('#mat-select-7');
-let selectFromDropdown = By.css('span[class=mat-option-text]');
+let selectBranch = By.css('[formcontrolname="branchId"]');
+let selectCinema = By.css('[formcontrolname="cinemaId"]');
+let chooseADate = By.css('[formcontrolname="watchDate"]');
+let selectTime = By.css('[formcontrolname="scheduleId"]');
+let selectFromDropdown = By.css('[class="cdk-overlay-pane"] mat-option span');
 let selectSeatPlan = By.css('.seat-plan .seat.ng-star-inserted > span');
 let confirmReservationButton = By.css('button[type="submit"]');
 let ticketSummary = By.css('app-reservation-summary div div');
@@ -16,7 +16,8 @@ class TicketRegistrationPage extends BasePage {
 
     selectBranchFromDropdown = async (branch) => {
         this.clickElement(selectBranch);
-        const selectBranchList = this.driver.findElements(selectFromDropdown);
+        await this.driver.wait(until.elementsLocated(selectFromDropdown), 50000);
+        const selectBranchList = await this.driver.findElements(selectFromDropdown);
         for (let i = 0; i < selectBranchList.length; i++) {
             if (await selectBranchList[i].getText() === branch) {
                 await selectBranchList[i].click();
@@ -24,17 +25,20 @@ class TicketRegistrationPage extends BasePage {
         }
     }
     selectCinemaFromDropdown = async (cinema) => {
+        this.WaitVisibleElement(selectCinema);
         this.clickElement(selectCinema);
-        const selectCinemaList = this.driver.findElements(selectFromDropdown);
-        for (let i = 0; i < selectCinemaList.length; i++) {
-            if (await selectCinemaList[i].getText() === cinema) {
+        
+        let selectCinemaList = await this.driver.findElements(selectFromDropdown);
+        for (let i = 0; i < await selectCinemaList.length; i++) {
+            if (selectCinemaList[i].getText() === cinema) {
                 await selectCinemaList[i].click();
             }
         }
     }
     chooseADateFromDropdown = async (date) => {
         this.clickElement(chooseADate);
-        const chooseADateFromList = this.driver.findElements(selectFromDropdown);
+        await this.driver.wait(until.elementsLocated(selectFromDropdown), 50000);
+        const chooseADateFromList = await this.driver.findElements(selectFromDropdown);
         for (let i = 0; i < chooseADateFromList.length; i++) {
             if (await chooseADateFromList[i].getText() === date) {
                 await chooseADateFromList[i].click();
@@ -43,7 +47,8 @@ class TicketRegistrationPage extends BasePage {
     }
     selectTimeFromDropdown = async (time) => {
         this.clickElement(selectTime);
-        const selectTimeList = this.driver.findElements(selectFromDropdown);
+        await this.driver.wait(until.elementsLocated(selectFromDropdown), 50000);
+        const selectTimeList = await this.driver.findElements(selectFromDropdown);
         for (let i = 0; i < selectTimeList.length; i++) {
             if (await selectTimeList[i].getText() === time) {
                 await selectTimeList[i].click();
@@ -51,8 +56,9 @@ class TicketRegistrationPage extends BasePage {
         }
     }
 
-    selectSeat = (seats) => {
-        const seatPlanList = this.driver.findElements(selectSeatPlan);
+    selectSeat = async(seats) => {
+        await this.driver.wait(until.elementsLocated(selectSeatPlan), 50000);
+        const seatPlanList = await this.driver.findElements(selectSeatPlan);
         for (let i = 0; i < seats; i++) {
             for (let j = 0; j < seatPlanList.length; j++) {
                 if (!seatPlanList[j].getAttribute('class').includes('taken')) {
