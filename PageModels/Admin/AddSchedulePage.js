@@ -6,7 +6,7 @@ let cinemaDropdown = By.css('app-schedule-add form [name="cinema"]');
 let cinemaOptions = By.css('select[name="cinema"] option');
 let movieDropdown = By.css('app-schedule-add form [name="movie"]');
 let startDateInput = By.css('app-schedule-add form [name="startDate"]');
-let hourInput = By.css('app-schedule-add form [placeholder="HH"]');
+let hourInput = By.css('input[aria-label="Hours"]');
 let minInput = By.css('app-schedule-add form [placeholder="MM"]');
 let priceInput = By.css('app-schedule-add form [name="ticketPrice"]');
 let addButton = By.css('app-schedule-add form [type="submit"]');
@@ -16,15 +16,15 @@ let backToListLink = By.css('app-schedule-add a');
 class AddSchedulePage extends BasePage {
 
     selectCinemaName = async (cinemaName) => {
-
-        await this.driver.wait(until.elementsLocated(cinemaDropdown), 50000)
+        await this.clickElement(cinemaDropdown);
+        //let dropdown = await this.driver.wait(until.elementsLocated(cinemaDropdown), 50000)
         let options = await this.driver.findElements(cinemaOptions);
         // let selectedOption = await options.findElements(By.css('option'));
-
+        
         for(let i = 0; i < options.length; i++)
         {
-           let text = await options[i].getText();
-            if(text.trim().includes(cinemaName))
+           let text = await options[i].getAttribute('text');
+            if(text == cinemaName)
             {
                 await options[i].click();
                 break;
@@ -114,6 +114,8 @@ class AddSchedulePage extends BasePage {
         await this.selectMovieName(movie);
         await this.enterStartDate(startDate);
 
+        await this.driver.sleep(5000);
+        await this.clickElement(hourInput);
         await this.driver.findElement(hourInput).clear();
         await this.enterText(hourInput, hr)
 
@@ -163,7 +165,22 @@ class AddSchedulePage extends BasePage {
     getCinemaNames = async () => {
         await this.clickElement(cinemaDropdown);
         return await this.getText(cinemaDropdown);
-    }   
+    }  
+    
+    addDays = async (days) => {
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate() + days;
+
+        if (day < 10) {
+            day = '0' + day
+        }
+        if (month < 10) {
+            month = '0' + month
+        }
+        return `${year}-${month}-${day}`;
+    }
 
     isPageLoaded = async () => {
         await this.verifyPageLoad(cinemaDropdown) && this.verifyPageLoad(movieDropdown);

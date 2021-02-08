@@ -9,9 +9,10 @@ let addCinemaPageHeader = By.css('div[class="col-md-10"] h4');
 
 class AddCinemaPage extends BasePage {
 
-    inputCinemaName = async (cinemaName) => {
-        await this.enterText(cinemaNameField, cinemaName);
+    inputCinemaName = async (cinemaName, cinemaNumber) => {
+        await this.enterText(cinemaNameField, cinemaName + ' ' + cinemaNumber);
         await this.clickElement(addButton);
+        return `${cinemaName} ${cinemaNumber}`;
     }
     
     getRequiredNameErrorMessage = async () => {

@@ -10,15 +10,16 @@ let AdminSchedulePage = require('../../PageModels/Admin/AdminSchedulePage');
 let AddSchedulePage = require('../../PageModels/Admin/AddSchedulePage');
 let RegisterPage = require('../../PageModels/RegisterPage');
 let Utils = require('../../utils/cleanup');
+let faker = require('faker');
 
 describe('Add Cinema by Admin', () => {
 
-    let adminEmail = 'testqa145@admin.com';
-    let adminPassword = '@dmin';
-    let adminFirstName = 'Jaja';
-    let adminMiddleName = 'M';
-    let adminLastName = 'Gamilla';
-    let adminBday = '1994-11-01';
+    let adminFirstName = faker.name.firstName();
+    let adminMiddleName = faker.name.lastName();
+    let adminLastName = faker.name.lastName();
+    let adminEmail = adminFirstName + adminLastName + '@admin.com';
+    let adminPassword = faker.internet.password();
+    let adminBday = faker.date.past(40).toISOString();
 
     let uniqueNum = Math.floor(Math.random() * 1000);
     let cinema1 = `Cinema ${uniqueNum + 1}`;
@@ -43,19 +44,12 @@ describe('Add Cinema by Admin', () => {
         await this.landingPage.clickRegisterButton();
         await this.registerPage.inputUserDetails(adminEmail, adminPassword, adminFirstName, adminMiddleName, adminLastName, adminBday);
         await this.registerPage.clickRegisterButton();
+        await this.landingPage.isPageLoaded();
         await this.loginPage.inputLoginCredentials(adminEmail, adminPassword);
         await this.loginPage.clickLoginButton();
     });
 
-    test('Add Cinemas', async () => {
-        
-        await this.landingPage.isPageLoaded();
-        await this.landingPage.clickLoginButton();
-
-        await this.loginPage.isPageLoaded();        
-        await this.loginPage.inputLoginCredentials(adminEmail, adminPassword);  
-        await this.loginPage.clickLoginButton();
-        
+    test('Add Cinemas', async () => {      
         await this.homePage.isPageLoaded();
         await this.homePage.clickAdminTab();
         
