@@ -141,6 +141,8 @@ describe('Add Cinema by Admin', () => {
                 expect(await this.adminSchedulePage.verifyAddedMovieSchedule(listOfMovies[3])).toBe(true);
             }
         }
+
+        expect(await this.adminSchedulePage.getCurrentUrl()).toContain('/schedule');
         // let firstDay = new Date();
         // firstDay.setDate(firstDay.getDate() + 3);
 
