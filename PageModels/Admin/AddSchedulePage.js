@@ -111,18 +111,20 @@ class AddSchedulePage extends BasePage {
 
     addSchedule = async (cinema, movie, startDate, hr, min, price) => {
         await this.selectCinemaName(cinema);
-        await this.selectMovieName(movie);
-        await this.enterStartDate(startDate);
+        let movieName = await this.selectMovieName(movie);
+        let date = await this.enterStartDate(startDate);
 
         await this.driver.sleep(5000);
         await this.clickElement(hourInput);
         await this.driver.findElement(hourInput).clear();
-        await this.enterText(hourInput, hr)
+        let hour = await this.enterText(hourInput, hr)
 
         await this.driver.findElement(minInput).clear();
-        await this.enterText(minInput, min)
+        let minutes = await this.enterText(minInput, min)
 
         await this.enterTicketPrice(price);
+
+        return movieName;
     }
 
     enterStartDate = async(startDate) => {

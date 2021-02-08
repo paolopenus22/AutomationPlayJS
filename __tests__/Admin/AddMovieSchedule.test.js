@@ -108,8 +108,9 @@ describe('Add Cinema by Admin', () => {
                 hours+=2;
 
                 addDays = await this.addSchedulePage.addDays(3);
-                await this.addSchedulePage.addSchedule(listOfCinemas[1], listOfMovies[1], addDays, hours + 2, minutes + 30, 250)
+                let input = await this.addSchedulePage.addSchedule(listOfCinemas[1], listOfMovies[1], addDays, hours + 2, minutes + 30, 250)
                 await this.addSchedulePage.clickAddButton();
+                expect(await this.adminSchedulePage.verifyAddedMovieSchedule(listOfMovies[1])).toBe(true);
             }
         }
         //CINEMA 2 SCHEDULES
@@ -123,6 +124,7 @@ describe('Add Cinema by Admin', () => {
                 addDays = await this.addSchedulePage.addDays(4);
                 await this.addSchedulePage.addSchedule(listOfCinemas[2], listOfMovies[2], addDays, hours + 2, minutes + 30, 250)
                 await this.addSchedulePage.clickAddButton();
+                expect(await this.adminSchedulePage.verifyAddedMovieSchedule(listOfMovies[2])).toBe(true);
             }
         }
         //CINEMA 3 SCHEDULES
@@ -136,6 +138,7 @@ describe('Add Cinema by Admin', () => {
                 addDays = await this.addSchedulePage.addDays(5);
                 await this.addSchedulePage.addSchedule(listOfCinemas[3], listOfMovies[3], addDays, hours + 2, minutes + 30, 250)
                 await this.addSchedulePage.clickAddButton();
+                expect(await this.adminSchedulePage.verifyAddedMovieSchedule(listOfMovies[3])).toBe(true);
             }
         }
         // let firstDay = new Date();
