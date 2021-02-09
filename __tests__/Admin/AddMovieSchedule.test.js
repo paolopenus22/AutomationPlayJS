@@ -25,7 +25,9 @@ describe('Add Cinema by Admin', () => {
     let adminBday = faker.date.past(40).toISOString();
 
     let cinemaNumber = Math.floor(Math.random() * 1000);
-    let cinemaName = 'Cinema';
+    let cinemaName = `Cinema ${cinemaNumber + 1}`;
+    let movies = ['Captain America: Civil War','Spider-Man: Homecoming','The Avengers'];
+
 
     beforeEach(async () => {
         this.landingPage = new LandingPage();
@@ -63,7 +65,7 @@ describe('Add Cinema by Admin', () => {
         // let targetMovieTime = ['11:00:am', '13:30:pm', '16:00:pm']
         // let ticketPrice = '350';
         // let movieDates = [];
-        // let selectedMovieTitles= [];
+        let selectedMovieTitles= [];
 
         // Navigate to admin tab
         await this.homePage.isPageLoaded();
@@ -88,14 +90,17 @@ describe('Add Cinema by Admin', () => {
             await this.editBranchPage.clickAddButton();
 
             await this.addCinemaPage.isPageLoaded();
-            await this.addCinemaPage.inputCinemaName(cinemaName, cinemaNumber);
+            await this.addCinemaPage.inputCinemaName(cinemaName);
             cinemasCount = await this.editBranchPage.getCinemasCount();
             cinemaNumber++;
         }
+        listOfCinemas = await this.editBranchPage.getCinemaList();
+        
 
         // Add movie schedule
-        await this.editBranchPage.isPageLoaded();
+        //await this.editBranchPage.isPageLoaded();
         await this.editBranchPage.clickViewSchedules();
+
 
        // let listOfCinemas = await this.addSchedulePage.getCinemaList();
 
@@ -103,46 +108,49 @@ describe('Add Cinema by Admin', () => {
         for(let i = 1; i < 4; i++) {
             for(let j = 1; j < 4; j++) {  
                 await this.adminSchedulePage.AddMovieSchedule();
-                listOfCinemas = await this.addSchedulePage.getCinemaList();
-                listOfMovies = await this.addSchedulePage.getMovieList();
+               //listOfMovies = await this.addSchedulePage.getMovieList();
                 hours+=2;
 
                 addDays = await this.addSchedulePage.addDays(3);
-                let input = await this.addSchedulePage.addSchedule(listOfCinemas[1], listOfMovies[1], addDays, hours + 2, minutes + 30, 250)
+                let input = await this.addSchedulePage.addSchedule(listOfCinemas[0], movies[0], addDays, hours + 2, minutes + 30, 250);
+                selectedMovieTitles.push(input);
                 await this.addSchedulePage.clickAddButton();
-                expect(await this.adminSchedulePage.verifyAddedMovieSchedule(listOfMovies[1])).toBe(true);
             }
         }
         //CINEMA 2 SCHEDULES
         for(let i = 1; i < 4; i++) {
             for(let j = 1; j < 4; j++) {
                 await this.adminSchedulePage.AddMovieSchedule();
-                listOfCinemas = await this.addSchedulePage.getCinemaList();
-                listOfMovies = await this.addSchedulePage.getMovieList();
                 hours+=2;
             
                 addDays = await this.addSchedulePage.addDays(4);
-                await this.addSchedulePage.addSchedule(listOfCinemas[2], listOfMovies[2], addDays, hours + 2, minutes + 30, 250)
+                let input = await this.addSchedulePage.addSchedule(listOfCinemas[1], movies[1], addDays, hours + 2, minutes + 30, 250)
+                selectedMovieTitles.push(input);
                 await this.addSchedulePage.clickAddButton();
-                expect(await this.adminSchedulePage.verifyAddedMovieSchedule(listOfMovies[2])).toBe(true);
             }
         }
         //CINEMA 3 SCHEDULES
         for(let i = 1; i < 4; i++) {
             for(let j = 1; j < 4; j++) {
                 await this.adminSchedulePage.AddMovieSchedule();
-                listOfCinemas = await this.addSchedulePage.getCinemaList();
-                listOfMovies = await this.addSchedulePage.getMovieList();
                 hours+=2;
 
                 addDays = await this.addSchedulePage.addDays(5);
-                await this.addSchedulePage.addSchedule(listOfCinemas[3], listOfMovies[3], addDays, hours + 2, minutes + 30, 250)
+                let input = await this.addSchedulePage.addSchedule(listOfCinemas[2], movies[2], addDays, hours + 2, minutes + 30, 250)
+                selectedMovieTitles.push(input);
                 await this.addSchedulePage.clickAddButton();
-                expect(await this.adminSchedulePage.verifyAddedMovieSchedule(listOfMovies[3])).toBe(true);
             }
+        }
+        for (let i = 0; i < 3; i++) {
+            await this.adminSchedulePage.viewSpecificCinema(listOfCinemas[i]);
+            await this.adminSchedulePage.itemPerPage();
+            await this.adminSchedulePage.isPageLoaded();
+            expect(await this.adminSchedulePage.verifyAddedMovieSchedule()).toContain(movies[i]);
         }
 
         expect(await this.adminSchedulePage.getCurrentUrl()).toContain('/schedule');
+        await this.homePage.clickMoviesTab();
+        expect(await this.moviesPage.getListOfMovieTitles()).toEqual(selectedMovieTitles);
         // let firstDay = new Date();
         // firstDay.setDate(firstDay.getDate() + 3);
 
@@ -185,7 +193,7 @@ describe('Add Cinema by Admin', () => {
         //             await this.adminSchedulePage.viewSpecificCinema(listOfCinemas[md]);
 
         //             await this.adminSchedulePage.isPageLoaded();
-        //             await this.adminSchedulePage.itemPerPage();
+                    //await this.adminSchedulePage.itemPerPage();
 
         //             await this.adminSchedulePage.isPageLoaded();
         //             selectedMovieTitles.push(listOfMovies[md]);

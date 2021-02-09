@@ -1,9 +1,10 @@
 const { By, Key, until } = require("selenium-webdriver");
 const BasePage = require("../BasePage");
+const AdminSchedulePage = require("../Admin/AdminSchedulePage");
 
 let branchName = By.css('app-schedule-add form h5');
 let cinemaDropdown = By.css('app-schedule-add form [name="cinema"]');
-let cinemaOptions = By.css('select[name="cinema"] option');
+let cinemaOptions = By.css('option');
 let movieDropdown = By.css('app-schedule-add form [name="movie"]');
 let startDateInput = By.css('app-schedule-add form [name="startDate"]');
 let hourInput = By.css('input[aria-label="Hours"]');
@@ -16,37 +17,45 @@ let backToListLink = By.css('app-schedule-add a');
 class AddSchedulePage extends BasePage {
 
     selectCinemaName = async (cinemaName) => {
-        await this.clickElement(cinemaDropdown);
+
+        await this.driver.wait(until.elementLocated(cinemaDropdown), 50000);
+        await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(cinemaDropdown)), 50000);
+        await this.driver.wait(until.elementIsVisible(await this.driver.findElement(cinemaDropdown)), 50000);
+        let elem = await this.driver.findElement(cinemaDropdown);
+        await elem.click();
+        //await this.driver.sleep(1000);
         //let dropdown = await this.driver.wait(until.elementsLocated(cinemaDropdown), 50000)
         let options = await this.driver.findElements(cinemaOptions);
+       // let dropdown = await this.driver.wait(until.elementsLocated(cinemaOptions), 50000)
         // let selectedOption = await options.findElements(By.css('option'));
         
-        for(let i = 0; i < options.length; i++)
+        for(let i = 1; i < options.length; i++)
         {
-           let text = await options[i].getAttribute('text');
+            await this.driver.wait(until.elementIsVisible(options[i]), 5000);
+            let text = await options[i].getAttribute('text');
             if(text == cinemaName)
             {
                 await options[i].click();
-                break;
+                //break;
             }
         }
     }
 
-    getCinemaList = async () => {
-        let listOfArr = [];
+    // getCinemaList = async () => {
+    //     let listOfArr = [];
 
-        await this.clickElement(cinemaDropdown);
-        let dropdownContainer = await this.driver.findElement(cinemaDropdown);
-        let dropdownOptions = await dropdownContainer.findElements(By.css('option'));
+    //     await this.clickElement(cinemaDropdown);
+    //     let dropdownContainer = await this.driver.findElement(cinemaDropdown);
+    //     let dropdownOptions = await dropdownContainer.findElements(By.css('option'));
 
-        for (let index = 1; index < dropdownOptions.length; index++) {
+    //     for (let index = 0; index < dropdownOptions.length; index++) {
         
-        let text = await dropdownOptions[index].getText();
-            listOfArr.push(text.trim());
-        }
+    //     let text = await dropdownOptions[index].getText();
+    //         listOfArr.push(text.trim());
+    //     }
 
-        return listOfArr;
-    }
+    //     return listOfArr;
+    // }
 
 
     getMovieList = async () => {
@@ -66,18 +75,25 @@ class AddSchedulePage extends BasePage {
 
 
     selectMovieName = async (movieName) => {
-        let options = this.driver.findElement(movieDropdown)
-        let selectedOption = await options.findElements(By.css('option'));
-
-        for(let i =0; i< selectedOption.length; i++)
+        
+        // let options2 = await this.driver.wait(until.elementLocated(movieDropdown), 50000);
+        // let options = await this.driver.findElement(movieDropdown);
+        await this.driver.wait(until.elementLocated(movieDropdown), 50000);
+        await this.driver.wait(until.elementIsVisible(this.driver.findElement(movieDropdown)), 50000);
+        await this.driver.wait(until.elementIsEnabled(this.driver.findElement(movieDropdown)), 50000);
+        let elem = await this.driver.findElement(movieDropdown);
+        //await elem.click();
+        let selectedOption = await elem.findElements(By.css('option'));
+        for(let i = 1; i< selectedOption.length; i++)
         {
-           let text = await selectedOption[i].getText();
-
-            if(text.trim().includes(movieName))
+            await this.driver.wait(until.elementIsVisible(selectedOption[i]), 5000);
+            let text = await selectedOption[i].getAttribute('text');
+            if(text == movieName)
             {
                 await selectedOption[i].click();
             }
         }
+        return movieName;
     }
 
     selectRandomCinema = async () => {
@@ -114,7 +130,7 @@ class AddSchedulePage extends BasePage {
         let movieName = await this.selectMovieName(movie);
         let date = await this.enterStartDate(startDate);
 
-        await this.driver.sleep(5000);
+       // await this.driver.sleep(5000);
         await this.clickElement(hourInput);
         await this.driver.findElement(hourInput).clear();
         let hour = await this.enterText(hourInput, hr)

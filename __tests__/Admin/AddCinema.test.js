@@ -22,8 +22,8 @@ describe('Add Cinema by Admin', () => {
     let adminBday = faker.date.past(40).toISOString();
 
     let uniqueNum = Math.floor(Math.random() * 1000);
-    let cinema1 = `Cinema ${uniqueNum + 1}`;
-    let cinema2 = `Cinema ${uniqueNum + 2}`;
+    let cinema1 = `Cinema 00${uniqueNum + 1}`;
+    let cinema2 = `Cinema 00${uniqueNum + 2}`;
 
     beforeEach(async () => {
         this.landingPage = new LandingPage();
@@ -72,25 +72,24 @@ describe('Add Cinema by Admin', () => {
         await this.addCinemaPage.inputCinemaName(cinema2);
 
         await this.editBranchPage.isPageLoaded();
-        await this.editBranchPage.isPageLoaded();
         expect(await this.editBranchPage.verifyCinema()).toContain(cinema1);
         expect(await this.editBranchPage.verifyCinema()).toContain(cinema2);
 
-        await this.editBranchPage.clickViewSchedules();
+         await this.editBranchPage.clickViewSchedules();
 
-        await this.adminSchedulePage.isPageLoaded();
+        //await this.adminSchedulePage.isPageLoaded();
         await this.adminSchedulePage.AddMovieSchedule();
 
-        await this.addSchedulePage.isPageLoaded();
+       // await this.addSchedulePage.isPageLoaded();
         await this.addSchedulePage.isPageLoaded();
         expect(await this.addSchedulePage.getCinemaNames()).toContain(cinema1);
         expect(await this.addSchedulePage.getCinemaNames()).toContain(cinema2);
-    });
+     });
     
     afterAll(async () => {
         await this.landingPage.closeMoviesApp();
         await this.cleanUp.deleteUser(adminEmail);
-        await this.cleanUp.deleteCinema(cinema1);
-        await this.cleanUp.deleteCinema(cinema2);
+        // await this.cleanUp.deleteCinema(cinema1);
+        // await this.cleanUp.deleteCinema(cinema2);
      });
 });
