@@ -40,14 +40,6 @@ class BasePage {
         });
         return elem;
     }
-    clickElement1 = async (el) => {
-        
-        await this.driver.wait(until.elementLocated(el), 50000);
-        let elem = await this.driver.findElement(el).then((x) => {
-                    x.click();
-        });
-        return elem;
-    }
     clearElement = async (el) => {
         await this.driver.wait(until.elementLocated(el), 50000).clear();
         // let elem = await this.driver.findElement(el).then((x) => {
