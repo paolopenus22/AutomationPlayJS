@@ -10,19 +10,20 @@ let AdminSchedulePage = require('../../PageModels/Admin/AdminSchedulePage');
 let AddSchedulePage = require('../../PageModels/Admin/AddSchedulePage');
 let RegisterPage = require('../../PageModels/RegisterPage');
 let Utils = require('../../utils/cleanup');
+let faker = require('faker');
 
 describe('Add Cinema by Admin', () => {
 
-    let adminEmail = 'testqa145@admin.com';
-    let adminPassword = '@dmin';
-    let adminFirstName = 'Jaja';
-    let adminMiddleName = 'M';
-    let adminLastName = 'Gamilla';
-    let adminBday = '1994-11-01';
+    let adminFirstName = faker.name.firstName();
+    let adminMiddleName = faker.name.lastName();
+    let adminLastName = faker.name.lastName();
+    let adminEmail = adminFirstName + adminLastName + '@admin.com';
+    let adminPassword = faker.internet.password();
+    let adminBday = faker.date.past(40).toISOString();
 
     let uniqueNum = Math.floor(Math.random() * 1000);
-    let cinema1 = `Cinema ${uniqueNum + 1}`;
-    let cinema2 = `Cinema ${uniqueNum + 2}`;
+    let cinema1 = `Cinema 00${uniqueNum + 1}`;
+    let cinema2 = `Cinema 00${uniqueNum + 2}`;
 
     beforeEach(async () => {
         this.landingPage = new LandingPage();
@@ -43,19 +44,12 @@ describe('Add Cinema by Admin', () => {
         await this.landingPage.clickRegisterButton();
         await this.registerPage.inputUserDetails(adminEmail, adminPassword, adminFirstName, adminMiddleName, adminLastName, adminBday);
         await this.registerPage.clickRegisterButton();
+        await this.landingPage.isPageLoaded();
         await this.loginPage.inputLoginCredentials(adminEmail, adminPassword);
         await this.loginPage.clickLoginButton();
     });
 
-    test('Add Cinemas', async () => {
-        
-        await this.landingPage.isPageLoaded();
-        await this.landingPage.clickLoginButton();
-
-        await this.loginPage.isPageLoaded();        
-        await this.loginPage.inputLoginCredentials(adminEmail, adminPassword);  
-        await this.loginPage.clickLoginButton();
-        
+    test('Add Cinemas', async () => {      
         await this.homePage.isPageLoaded();
         await this.homePage.clickAdminTab();
         
@@ -78,25 +72,24 @@ describe('Add Cinema by Admin', () => {
         await this.addCinemaPage.inputCinemaName(cinema2);
 
         await this.editBranchPage.isPageLoaded();
-        await this.editBranchPage.isPageLoaded();
         expect(await this.editBranchPage.verifyCinema()).toContain(cinema1);
         expect(await this.editBranchPage.verifyCinema()).toContain(cinema2);
 
-        await this.editBranchPage.clickViewSchedules();
+         await this.editBranchPage.clickViewSchedules();
 
-        await this.adminSchedulePage.isPageLoaded();
+        //await this.adminSchedulePage.isPageLoaded();
         await this.adminSchedulePage.AddMovieSchedule();
 
-        await this.addSchedulePage.isPageLoaded();
+       // await this.addSchedulePage.isPageLoaded();
         await this.addSchedulePage.isPageLoaded();
         expect(await this.addSchedulePage.getCinemaNames()).toContain(cinema1);
         expect(await this.addSchedulePage.getCinemaNames()).toContain(cinema2);
-    });
+     });
     
     afterAll(async () => {
         await this.landingPage.closeMoviesApp();
         await this.cleanUp.deleteUser(adminEmail);
-        await this.cleanUp.deleteCinema(cinema1);
-        await this.cleanUp.deleteCinema(cinema2);
+        // await this.cleanUp.deleteCinema(cinema1);
+        // await this.cleanUp.deleteCinema(cinema2);
      });
 });

@@ -47,6 +47,7 @@ class CleanUp {
             console.log("Cannot delete user " + emailAdd + + " " + e);
         }
     }
+
     deleteBranch = async (branch) => {
         let id = await this.getBranchID(branch);
         try 

@@ -81,7 +81,8 @@ class EditBranchPage extends BasePage {
         return new AddCinemaPage();
     }
 
-    verifyCinema = async () => {               
+    verifyCinema = async () => {    
+        await this.driver.wait(until.elementLocated(cinemaList), 10000);           
         return await this.getText(cinemaList);
     }
 
@@ -111,6 +112,19 @@ class EditBranchPage extends BasePage {
     getBranchAddress = async() => {
         let address =  await this.driver.findElement(branchAddress);
         return await address.getAttribute('value');
+    }
+    
+    getCinemaList = async () => {
+        let listOfArr = [];
+        let containerLinks = await this.driver.findElement(cinemaLinks);
+        let links = await containerLinks.findElements(By.css('li > a'));
+        let text;
+
+        for (let i = 0; i < links.length; i++) {
+            text = await links[i].getText();
+            listOfArr.push(text);
+        }
+        return listOfArr;
     }
 }
 
