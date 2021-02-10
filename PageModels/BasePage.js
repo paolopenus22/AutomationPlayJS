@@ -40,6 +40,13 @@ class BasePage {
         });
         return elem;
     }
+    clearElement = async (el) => {
+        await this.driver.wait(until.elementLocated(el), 50000).clear();
+        // let elem = await this.driver.findElement(el).then((x) => {
+        //             x.clear();
+        // });
+        // return elem;
+    }
     enterText = async (el, text) => {
         await this.driver.wait(until.elementLocated(el), 5000);
         let elem = await this.driver.findElement(el).then((x) => {
@@ -61,6 +68,11 @@ class BasePage {
         await this.driver.wait(until.elementLocated(el), 5000);
         let display = await this.driver.findElement(el).isDisplayed();
         return display;
+    }
+    wait = async (timeout) => {
+        return new Promise(resolve => {
+            setTimeout(resolve, timeout);
+        });
     }
 }
 module.exports = BasePage;

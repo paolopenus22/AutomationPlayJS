@@ -1,13 +1,26 @@
 let LandingPage = require('../../PageModels/LandingPage');
 let LoginPage = require('../../PageModels/LoginPage');
+let RegisterPage = require('../../PageModels/RegisterPage');
+let faker = require('faker');
 
 describe('Error messages for negative login scenarios', () => {
+
+    let adminFirstName = faker.name.firstName();
+    let adminMiddleName = faker.name.lastName();
+    let adminLastName = faker.name.lastName();
+    let adminEmail = adminFirstName + adminLastName + '@admin.com';
+    let adminPassword = faker.internet.password();
+    let adminBday = faker.date.past(40).toISOString();
     
     beforeEach(async () => {
         this.landingPage = new LandingPage();
         this.loginPage = new LoginPage();
+        this.registerPage = new RegisterPage();
         jest.setTimeout(40000);
         await this.landingPage.navigateToMoviesApp();
+        await this.landingPage.clickRegisterButton();
+        await this.registerPage.inputUserDetails(adminEmail, adminPassword, adminFirstName, adminMiddleName, adminLastName, adminBday);
+        await this.registerPage.clickRegisterButton();
     });
     test('Verify error message when Email is invalid', async () => {
         let invalidEmail = 'Abcd';
@@ -46,7 +59,7 @@ describe('Error messages for negative login scenarios', () => {
         expect(getErrorMsg).toBe(errorMsg);
     });
     test('Verify error message when Users password is incorrect', async () => {     
-        let email = 'admin@admin.com';
+        let email = adminEmail;
         let invalidPassword =  '1234';
         let errorMsg = 'Incorrect password';
      

@@ -11,16 +11,15 @@ class MoviesPage extends BasePage {
 
     getListOfMovieTitles = async () => {
         let movieTitleList = [];
-        let movieTitles = "";
+        let movieTitles;
 
         await this.driver.wait(until.elementsLocated(movieCard), 50000);
         let movieCardsTitle= await this.driver.findElements(movieCardsDetails);
 
         for (let i = 0; i < movieCardsTitle.length; i++) {
-            
+            await this.driver.wait(until.elementIsVisible(movieCardsTitle[i]), 50000);
             movieTitles = await movieCardsTitle[i].getText();
             movieTitleList.push(movieTitles);
-
         }
         return movieTitleList;
     }
