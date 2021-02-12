@@ -36,7 +36,7 @@ class EditBranchPage extends BasePage {
 
     isCinemaDisplayed = async (cinemaName) => {
         await this.driver.wait(until.elementLocated(cinemaLinks), 5000)
-       return await this.driver.findElements(By.partialLinkText(cinemaLinks, cinemaName)).isDisplayed();
+       return await this.driver.findElement(By.partialLinkText(cinemaLinks, cinemaName)).isDisplayed();
     }
 
     clickBackToList = async () => {

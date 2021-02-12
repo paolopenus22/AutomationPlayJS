@@ -25,7 +25,7 @@ class AdminBranchPage extends BasePage {
             if(await cards[i].findElement(branchName).getText() === name)
             {
                 await cards[i].findElement(checkScheduleBtn).click();
-                break;
+                return new EditBranchPage();
             }
         }
     }

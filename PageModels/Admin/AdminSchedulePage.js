@@ -155,7 +155,6 @@ class AdminSchedulePage extends BasePage {
     }
 
     isPageLoaded = async () => {
-        this.wait(3000);
         await this.verifyPageLoad(addMovieSchedBtn);
     }
 

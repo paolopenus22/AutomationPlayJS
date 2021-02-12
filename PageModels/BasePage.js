@@ -66,9 +66,8 @@ class BasePage {
     }
 
      verifyPageLoad = async (el) => {
-        await this.driver.wait(until.elementLocated(el), 5000);
-        let display = await this.driver.findElement(el).isDisplayed();
-        return display;
+        await this.driver.wait(until.elementLocated(el), 50000);
+        return await this.driver.findElement(el).isDisplayed();
     }
 
     wait = async (timeout) => {
