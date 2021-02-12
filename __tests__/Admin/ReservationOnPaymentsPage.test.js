@@ -37,11 +37,11 @@ describe('Verify reservations on Payment Page', () => {
     let movie = 'Spider-Man: Homecoming';
     let startDate = new Date();
     startDate.setDate(startDate.getDate() + 5);
-    startDate = startDate.toISOString();
+    startDate = startDate.toISOString().slice(0, 10);;
     let hr = 11;
     let min = 30; 
     let price = 200;
-    let seatSelected = 2;
+    let noOfSeats = 2;
     
     beforeEach(async () => {
         this.landingPage = new LandingPage();
@@ -132,10 +132,11 @@ describe('Verify reservations on Payment Page', () => {
         await this.ticketReservationPage.isPageLoaded();
         await this.ticketReservationPage.selectBranchFromDropdown(branchName);
         await this.ticketReservationPage.selectCinemaFromDropdown(cinema);
-        //await this.ticketReservationPage.selectTimeFromDropdown(startDate);
-        // await this.ticketReservationPage.selectTimeFromDropdown(`${hr}:${min} am`);
-        // await this.ticketReservationPage.selectSeat(seatSelected);
-        // await this.ticketReservationPage.clickConfirmReservation();
+        console.log(startDate);
+        await this.ticketReservationPage.chooseADateFromDropdown(startDate);
+        await this.ticketReservationPage.selectTimeFromDropdown(`${hr}:${min} am`);
+        await this.ticketReservationPage.selectSeat(noOfSeats);
+        await this.ticketReservationPage.clickConfirmReservation();
         // await this.ticketReservationPage.clickProceedToPayment();
         
         
