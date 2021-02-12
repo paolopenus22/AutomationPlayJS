@@ -64,31 +64,10 @@ class BasePage {
         });
         return enable;
     }
+
      verifyPageLoad = async (el) => {
-        let display = true;
-        try 
-        {
-            await this.driver.wait(until.elementLocated(el), 5000);
-        }
-        catch 
-        {            
-            display = false;
-        }
-
-        return display;
-    }
-
-    WaitVisibleElement = async (el) => {
-        let display = true;
-        try 
-        {
-            await this.driver.wait(until.elementLocated(el), 50000);
-        }
-        catch 
-        {            
-            display = false;
-        }
-
+        await this.driver.wait(until.elementLocated(el), 5000);
+        let display = await this.driver.findElement(el).isDisplayed();
         return display;
     }
 

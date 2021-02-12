@@ -14,6 +14,7 @@ let editBranchHeader = By.css('app-branch-edit h4');
 let cinemaHeader = By.css('app-cinema-list h4');
 let addCinema = By.css('button[class="btn btn-outline-secondary mr-2"]');
 let cinemaList = By.css('h4 + ul');
+let cinemaListItem = By.css('h4 + ul li');
 let cinemaItems = By.css('h4 + ul > li > a');
 let branchName = By.css('app-branch-edit [formcontrolname="name"]');
 let branchAddress = By.css('app-branch-edit [formcontrolname="address"]');
@@ -81,9 +82,17 @@ class EditBranchPage extends BasePage {
         return new AddCinemaPage();
     }
 
-    verifyCinema = async () => {    
-        await this.driver.wait(until.elementLocated(cinemaList), 10000);           
-        return await this.getText(cinemaList);
+    GetStringListOfCinema = async () => {
+        await this.driver.wait(until.elementLocated(cinemaListItem), 10000);  
+        let els = await this.driver.findElements(cinemaListItem);
+        let list = [];
+
+        for(let i = 0; i < els.length; i++)
+        {
+            list.push(await els[i].getText());
+        }
+        
+        return list.toString();
     }
 
     isPageLoaded = async () => {

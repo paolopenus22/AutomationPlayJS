@@ -1,4 +1,5 @@
 let LandingPage = require('../../PageModels/LandingPage');
+let RegisterPage = require('../../PageModels/RegisterPage');
 let LoginPage = require('../../PageModels/LoginPage');
 let HomePage = require('../../PageModels/HomePage');
 let AdminPage = require('../../PageModels/Admin/AdminPage');
@@ -10,13 +11,19 @@ let Utils = require('../../utils/cleanup');
 let faker = require('faker');
 
 describe('Manage Cinema Seat Plan', () => {
-    let adminEmail = 'admin@admin.com';
-    let adminPassword = 'password';
+    let adminFirstName = faker.name.firstName();
+    let adminMiddleName = faker.name.lastName();
+    let adminLastName = faker.name.lastName();
+    let adminEmail = adminFirstName + adminLastName + '@admin.com';
+    let adminPassword = faker.internet.password();
+    let adminBday = faker.date.past(40).toISOString();
+
     let uniqueNum = Math.floor(Math.random() * 1000);
-    let cinema = `Cinema ${uniqueNum + 1}`;
+    let cinema = `Cinema 00${uniqueNum + 1}`;
 
     beforeEach(async () => {
         this.landingPage = new LandingPage();
+        this.registerPage = new RegisterPage();
         this.loginPage = new LoginPage();
         this.homePage = new HomePage();
         this.adminPage = new AdminPage();
@@ -27,17 +34,16 @@ describe('Manage Cinema Seat Plan', () => {
         this.cleanUp = new Utils();
         jest.setTimeout(40000);
         await this.landingPage.navigateToMoviesApp();
-    });
-
-    test('Seat plan', async () => {
+        await this.landingPage.clickRegisterButton();
+        await this.registerPage.inputUserDetails(adminEmail, adminPassword, adminFirstName, adminMiddleName, adminLastName, adminBday);
+        await this.registerPage.clickRegisterButton();
         await this.landingPage.isPageLoaded();
-        await this.landingPage.clickLoginButton();
-
-        // 1. Login as Admin User
-        await this.loginPage.isPageLoaded();
         await this.loginPage.inputLoginCredentials(adminEmail, adminPassword);
         await this.loginPage.clickLoginButton();
 
+    });
+
+    test('Seat plan', async () => {
         // 2. Click Admin Menu
         await this.homePage.isPageLoaded();
         await this.homePage.clickAdminTab();
@@ -114,6 +120,7 @@ describe('Manage Cinema Seat Plan', () => {
 
     afterAll(async () => {
         await this.landingPage.closeMoviesApp();
+        await this.cleanUp.deleteUser(adminEmail);
         await this.cleanUp.deleteCinema(cinema);
      });
 });

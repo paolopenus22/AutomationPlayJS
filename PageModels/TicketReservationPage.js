@@ -21,29 +21,50 @@ class TicketRegistrationPage extends BasePage {
         for (let i = 0; i < selectBranchList.length; i++) {
             if (await selectBranchList[i].getText() === branch) {
                 await selectBranchList[i].click();
+                break;
             }
         }
+        await this.driver.sleep(3000);
     }
     selectCinemaFromDropdown = async (cinema) => {
-        this.WaitVisibleElement(selectCinema);
-        this.clickElement(selectCinema);
+        await this.driver.wait(until.elementIsVisible(await this.driver.findElement(selectCinema)), 50000);
         
-        let selectCinemaList = await this.driver.findElements(selectFromDropdown);
+        this.clickElement(selectCinema);
+               
+        await this.driver.wait(until.elementsLocated(selectFromDropdown), 50000);
+        await this.driver.wait(until.elementIsVisible(await this.driver.findElement(selectFromDropdown)), 50000);
+        const selectCinemaList = await this.driver.findElements(selectFromDropdown);
         for (let i = 0; i < await selectCinemaList.length; i++) {
+            await this.wait(5000);
             if (selectCinemaList[i].getText() === cinema) {
+                console.log(await selectCinemaList[i].getText());
+                await this.wait(5000);
                 await selectCinemaList[i].click();
+                break;
             }
         }
+
+        await this.driver.sleep(5000);
     }
     chooseADateFromDropdown = async (date) => {
+        await this.driver.wait(until.elementsLocated(chooseADate), 50000);
+        await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(selectCinema)), 50000);
+        await this.driver.wait(until.elementIsVisible(await this.driver.findElement(selectCinema)), 50000);
+
         this.clickElement(chooseADate);
+
+        await this.driver.wait(until.elementsLocated(selectFromDropdown), 50000);
+        await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(selectFromDropdown)), 50000);
+        await this.driver.wait(until.elementIsVisible(await this.driver.findElement(selectFromDropdown)), 50000);
         await this.driver.wait(until.elementsLocated(selectFromDropdown), 50000);
         const chooseADateFromList = await this.driver.findElements(selectFromDropdown);
         for (let i = 0; i < chooseADateFromList.length; i++) {
             if (await chooseADateFromList[i].getText() === date) {
+                await this.driver.wait(until.elementsLocated(chooseADateFromList[i]), 50000);
                 await chooseADateFromList[i].click();
             }
         }
+        await this.driver.sleep(5000);
     }
     selectTimeFromDropdown = async (time) => {
         this.clickElement(selectTime);
