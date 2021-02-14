@@ -7,7 +7,7 @@ let chooseADate = By.css('[formcontrolname="watchDate"]');
 let selectTime = By.css('[formcontrolname="scheduleId"]');
 let selectFromDropdown = By.css('[class="cdk-overlay-pane"] mat-option span');
 let selectSeatPlan = By.css('.seat-plan .seat.ng-star-inserted > span');
-let availableSeat =  By.css('.seat-plan [class="seat ng-star-inserted"]');
+let availableSeat =  By.css('.seat-plan [class="seat ng-star-inserted"] span');
 let confirmReservationButton = By.css('button[type="submit"]');
 let ticketSummary = By.css('app-reservation-summary div div');
 let proceedPaymentButton = By.css('button[class="btn btn-success m-2"]');
@@ -86,7 +86,6 @@ class TicketRegistrationPage extends BasePage {
     }
 
     selectSeat = async(seats) => {
-        await this.driver.wait(until.elementLocated(selectSeatPlan), 50000);
         await this.driver.wait(until.elementsLocated(availableSeat), 50000);
         await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(availableSeat)), 50000);
         await this.driver.wait(until.elementIsVisible(await this.driver.findElement(availableSeat)), 50000);
@@ -97,8 +96,14 @@ class TicketRegistrationPage extends BasePage {
         }
     }
 
-    clickConfirmReservation = () => {
-        this.clickElement(confirmReservationButton);
+    clickConfirmReservation = async() => {
+        await this.driver.wait(until.elementsLocated(confirmReservationButton), 50000);
+        await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(confirmReservationButton)), 50000);
+        await this.driver.wait(until.elementIsVisible(await this.driver.findElement(confirmReservationButton)), 50000);
+        const btn = await this.driver.findElement(confirmReservationButton);
+
+        await this.clickElement(confirmReservationButton);
+        await this.driver.sleep(5000);
     }
 
     verifyTicketReservationSummary = (reservation) => {
@@ -108,8 +113,8 @@ class TicketRegistrationPage extends BasePage {
         }   
     }
 
-    clickProceedToPayment = () => {
-        this.clickElement(proceedPaymentButton);
+    clickProceedToPayment = async () => {
+        await this.clickElement(proceedPaymentButton);
     }
     
     isPageLoaded = async () => {

@@ -62,7 +62,7 @@ class EditCinemaPage extends BasePage {
     }
 
     isPageLoaded = async () => {
-        await this.verifyPageLoad(nameField) && this.verifyPageLoad(editCinemaPageHeader);
+        await this.verifyPageLoad(nameField) && await this.verifyPageLoad(editCinemaPageHeader);
     }
 
     setTheSeat = async(row, column) => {

@@ -67,11 +67,15 @@ class AdminPaymentPage extends BasePage
 
     ClickTransactionDateByDescription = async(desc) => 
     {
+        await this.driver.wait(until.elementsLocated(transactionDate), 50000);
+        await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(transactionDate)), 50000);
+        await this.driver.wait(until.elementIsVisible(await this.driver.findElement(transactionDate)), 50000);
         let date = await this.driver.findElements(transactionDate);
-        let description = await this.driver.findElements(description);
-        for(let i = 0; i < description.length; i++)
+        let el = await this.driver.findElements(description);
+
+        for(let i = 0; i < await el.length; i++)
         {
-            if(await description[i].getText() === desc)
+            if(await el[i].getText() === desc)
             {
                 await date[i].click();
                 break;

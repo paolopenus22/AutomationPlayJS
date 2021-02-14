@@ -14,19 +14,19 @@ class AdminPaymentDetailPage extends BasePage
     }
 
     getPaymentDetailUser = async() => {
-        return await user.getText();
+        return await this.getText(user);
     }
 
     getPaymentDetailDescription = async() => {
-        return await description.getText();
+        return await this.getText(description);
     }
 
     getPaymentDetailCardHolderName = async() => {
-        return await cardHolderName.getText();
+        return await this.getText(cardHolderName);
     }
 
     getPaymentDetailAmount = async() => {
-        return await amount.getText();
+        return await this.getText(amount);
     }
 
 
