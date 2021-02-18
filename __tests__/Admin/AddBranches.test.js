@@ -55,6 +55,6 @@ describe('Add Branches by Admin', () => {
     afterAll(async () => {
         await this.landingPage.closeMoviesApp();
         await this.cleanUp.deleteUser(adminEmail);
-      //  await this.cleanUp.deleteBranch(newBranch);
+        await this.cleanUp.deleteBranch(newBranch);
      });
 });

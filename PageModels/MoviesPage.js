@@ -3,7 +3,8 @@ const BasePage = require("../PageModels/BasePage");
 
 
 let movieCard = By.css('app-movie-card');
-let movieCardsDetails = By.css('.movie-card div:nth-child(2) a')
+let movieCardsDetails = By.css('.movie-card div:nth-child(2) a');
+let getTicketButton = By.css('button:nth-child(2)');
 
 
 class MoviesPage extends BasePage {
@@ -24,5 +25,23 @@ class MoviesPage extends BasePage {
         return movieTitleList;
     }
 
+    isPageLoaded = async () => {
+        return await this.verifyPageLoad(movieCard) && this.verifyPageLoad(movieCardsDetails);
+    }
+
+    getTicketOfMovie = async (name)=> {
+        await this.driver.wait(until.elementsLocated(movieCard), 50000);
+        
+        let movieCardsTitle= await this.driver.findElements(movieCardsDetails);
+        let card = await this.driver.findElements(movieCard);
+
+        for (let i = 0; i < movieCardsTitle.length; i++) {
+            
+            if (await movieCardsTitle[i].getText() === name)
+            {
+                card[i].findElement(getTicketButton).click();
+            }
+        }
+    }
 }
 module.exports = MoviesPage;

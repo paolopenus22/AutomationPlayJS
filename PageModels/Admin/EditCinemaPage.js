@@ -22,12 +22,14 @@ class EditCinemaPage extends BasePage {
     }
 
     enterRows = async (rowValue) => {
-        await rows.clear();
+        let row = await this.driver.findElement(rows);
+        await row.clear();
         await this.enterText(rows, rowValue);
     }
 
     enterColumns = async (columnValue) => {
-        await columns.clear();
+        let column = await this.driver.findElement(columns);
+        await column.clear();
         await this.enterText(columns, columnValue);
     }
 
@@ -60,7 +62,7 @@ class EditCinemaPage extends BasePage {
     }
 
     isPageLoaded = async () => {
-        await this.verifyPageLoad(nameField) && this.verifyPageLoad(editCinemaPageHeader);
+        await this.verifyPageLoad(nameField) && await this.verifyPageLoad(editCinemaPageHeader);
     }
 
     setTheSeat = async(row, column) => {

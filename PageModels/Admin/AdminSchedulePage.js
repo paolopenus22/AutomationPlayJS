@@ -18,7 +18,7 @@ let previousPagination = By.css('pagination-template [class="pagination-previous
 class AdminSchedulePage extends BasePage {
 
     AddMovieSchedule = async() => {
-        await this.driver.wait(until.elementLocated(addMovieSchedBtn), 50000);
+        await this.driver.wait(until.elementLocated(addMovieSchedBtn), 100000);
         await this.clickElement(addMovieSchedBtn);
         // return new AdminSchedulePage();
     }
@@ -155,7 +155,7 @@ class AdminSchedulePage extends BasePage {
     }
 
     isPageLoaded = async () => {
-        await this.verifyPageLoad(movieName) || await this.verifyPageLoad(addMovieSchedBtn);
+        await this.verifyPageLoad(addMovieSchedBtn);
     }
 
 }
