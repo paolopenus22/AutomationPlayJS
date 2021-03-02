@@ -12,20 +12,24 @@ let confirmReservationButton = By.css('button[type="submit"]');
 let ticketSummary = By.css('app-reservation-summary div div');
 let proceedPaymentButton = By.css('button[class="btn btn-success m-2"]');
 let reservationDetails = By.css('.col-md-12.reservation-details');
+let ticketSummaryForm = By.css('app-reservation-summary > div');
 
 class TicketRegistrationPage extends BasePage {
 
     selectBranchFromDropdown = async (branch) => {
         this.clickElement(selectBranch);
         await this.driver.wait(until.elementsLocated(selectFromDropdown), 50000);
-        const selectBranchList = await this.driver.findElements(selectFromDropdown);
+        let selectBranchList = await this.driver.findElements(selectFromDropdown);
         for (let i = 0; i < selectBranchList.length; i++) {
+
+            await this.driver.wait(until.elementIsVisible(selectBranchList[i]), 50000);
+
             if (await selectBranchList[i].getText() === branch) {
                 await selectBranchList[i].click();
                 break;
             }
         }
-        await this.driver.sleep(3000);
+        await this.driver.sleep(5000);
     }
 
     selectCinemaFromDropdown = async (cinema) => {
@@ -39,6 +43,8 @@ class TicketRegistrationPage extends BasePage {
         let selectCinemaList = await this.driver.findElements(selectFromDropdown);
 
         for (let i = 0; i < await selectCinemaList.length; i++) {
+
+            await this.driver.wait(until.elementIsVisible(selectCinemaList[i]), 50000);
             if (await selectCinemaList[i].getText() === cinema) {
                 await selectCinemaList[i].click();
                 break;
@@ -86,15 +92,23 @@ class TicketRegistrationPage extends BasePage {
     }
 
     selectSeat = async(seats) => {
+
+        let reservedSeats = [];
         await this.driver.wait(until.elementsLocated(availableSeat), 50000);
         await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(availableSeat)), 50000);
         await this.driver.wait(until.elementIsVisible(await this.driver.findElement(availableSeat)), 50000);
         let seatPlanList = await this.driver.findElements(availableSeat);
 
         for (let i = 0; i < seats; i++) {
+            reservedSeats.push(await seatPlanList[i].getAttribute('innerHTML'));
             await seatPlanList[i].click();
+
         }
+
+        console.log(reservedSeats);
+        return reservedSeats;
     }
+
 
     clickConfirmReservation = async() => {
         await this.driver.wait(until.elementsLocated(confirmReservationButton), 50000);
@@ -105,6 +119,61 @@ class TicketRegistrationPage extends BasePage {
         await this.clickElement(confirmReservationButton);
         await this.driver.sleep(5000);
     }
+
+    checkTicketSummaryDetails = async(branchName, cinemaName, movieName, date, time, reservedSeats, noOfSeats, price) => {
+        await this.driver.wait(until.elementLocated(ticketSummaryForm), 50000);
+        await this.driver.wait(until.elementLocated(proceedPaymentButton), 50000);
+
+        let formattedTime = `${time.substr(0, time.indexOf(' '))} ${time.slice(-2).toUpperCase()}`
+        return await this.driver.findElement(ticketSummaryForm).getText().then(async (text) =>{
+            console.log(text);
+            return text.includes(`Movie Title: ${movieName}`)
+            && text.includes(`Branch: ${branchName}`)
+            && text.includes(`Cinema: ${cinemaName}`)
+            && text.includes(`Screening Date: ${await this.formattedDateTicketSummaryDialog(date)}`)
+            && text.includes(`Screening Time: ${formattedTime}`)
+            && text.includes(`Selected Seats: ${reservedSeats}`)
+            && text.includes(`No. of Seats: ${noOfSeats}`)
+            && text.includes(`Ticket Price: ${price}`)
+        });
+    }
+
+    formatTime= (time) => {
+        let _time = time.split(':');
+        let hours = Number(_time[0]);
+        let minutes = _time[1];
+        let timeValue = "";
+
+        console.log(hours, minutes);
+
+        if(hours == "00" || hours == "0"){
+            hours = "24";
+        }
+
+        if(hours > 0  && hours <= 12) {
+
+            timeValue += hours < 10 ? "0" + hours : hours;
+
+        } else if(hours > 12) {
+
+        timeValue += (hours - 12);
+        }
+
+        timeValue += ":" + minutes;
+        timeValue += (hours >= 12) ? " pm" : " am";
+
+        console.log(timeValue);
+        return timeValue;
+    }
+
+
+    formattedDateTicketSummaryDialog = async (givenDate) => {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+        ];
+        let date = new Date(givenDate);
+        return `${monthNames[date.getMonth()].slice(0, 3)} ${date.getDate()}, ${date.getFullYear()}`;
+      }
 
     verifyTicketReservationSummary = (reservation) => {
         const ticketReservationSummary = this.getText(ticketSummary);
