@@ -48,7 +48,7 @@ describe('Verify reservations on Payment Page', () => {
     let cvv ='111';
     let expiryDate = '1025';
     let dateToday = new Date();
-    dateToday = dateToday.toISOString().slice(0, 10);
+    dateToday = dateToday.toString().slice(0, 10);
 
     beforeEach(async () => {
         this.landingPage = new LandingPage();

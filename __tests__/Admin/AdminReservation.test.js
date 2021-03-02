@@ -206,19 +206,6 @@ describe('Verify reservations on Payment Page', () => {
         // 19. Click LogOut Button
         await this.homePage.clickLogoutButton()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     });
 
     afterAll(async () => {
