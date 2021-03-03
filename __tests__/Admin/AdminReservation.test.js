@@ -217,7 +217,7 @@ describe('Verify reservations on Payment Page', () => {
     });
 
     afterAll(async () => {
-        // await this.landingPage.closeMoviesApp();
+        await this.landingPage.closeMoviesApp();
         await this.cleanUp.deleteUser(adminEmail);
         await this.cleanUp.deleteCinema(cinema);
     });
