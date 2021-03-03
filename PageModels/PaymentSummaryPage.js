@@ -102,7 +102,7 @@ class PaymentSummaryPage extends BasePage {
         await this.driver.wait(until.elementLocated(closeButton), 50000);
 
         let formattedTime = `${time.substr(0, time.indexOf(' '))} ${time.slice(-2).toUpperCase()}`
-        return await this.driver.findElement(ticketSummaryForm).getText().then(async (text) =>{
+        return await this.driver.findElement(confirmedReservationDialog).getText().then(async (text) =>{
             console.log(text);
             console.log(branchName, cinemaName, movieName, date, time, reservedSeats, noOfSeats, price)
             return text.includes(`Your receipt has been sent to your email.`)
