@@ -36,10 +36,10 @@ class MoviesPage extends BasePage {
         let card = await this.driver.findElements(movieCard);
 
         for (let i = 0; i < movieCardsTitle.length; i++) {
-            
             if (await movieCardsTitle[i].getText() === name)
             {
                 card[i].findElement(getTicketButton).click();
+                break;
             }
         }
     }

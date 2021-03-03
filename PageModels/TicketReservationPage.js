@@ -106,9 +106,9 @@ class TicketRegistrationPage extends BasePage {
         await this.driver.sleep(5000);
     }
 
-    verifyTicketReservationSummary = (reservation) => {
-        const ticketReservationSummary = this.getText(ticketSummary);
-        if (ticketReservationSummary.includes(reservation)) {
+    verifyTicketReservationSummary = async (reservation) => {
+        const ticketReservationSummary = await this.getText(ticketSummary);
+        if (await ticketReservationSummary.includes(reservation)) {
             return true;
         }   
     }
