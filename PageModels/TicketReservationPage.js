@@ -29,7 +29,7 @@ class TicketRegistrationPage extends BasePage {
                 break;
             }
         }
-        await this.driver.sleep(5000);
+        await this.driver.sleep(1000);
     }
 
     selectCinemaFromDropdown = async (cinema) => {
@@ -51,7 +51,7 @@ class TicketRegistrationPage extends BasePage {
             }
         }
 
-        await this.driver.sleep(5000);
+        await this.driver.sleep(1000);
     }
 
     chooseADateFromDropdown = async (date) => {
@@ -71,7 +71,7 @@ class TicketRegistrationPage extends BasePage {
                 break;
             }
         }
-        await this.driver.sleep(5000);
+        await this.driver.sleep(1000);
     }
 
     selectTimeFromDropdown = async (time) => {
@@ -104,8 +104,6 @@ class TicketRegistrationPage extends BasePage {
             await seatPlanList[i].click();
 
         }
-
-        console.log(reservedSeats);
         return reservedSeats;
     }
 
@@ -126,7 +124,6 @@ class TicketRegistrationPage extends BasePage {
 
         let formattedTime = `${time.substr(0, time.indexOf(' '))} ${time.slice(-2).toUpperCase()}`
         return await this.driver.findElement(ticketSummaryForm).getText().then(async (text) =>{
-            console.log(text);
             return text.includes(`Movie Title: ${movieName}`)
             && text.includes(`Branch: ${branchName}`)
             && text.includes(`Cinema: ${cinemaName}`)
@@ -135,45 +132,9 @@ class TicketRegistrationPage extends BasePage {
             && text.includes(`Selected Seats: ${reservedSeats}`)
             && text.includes(`No. of Seats: ${noOfSeats}`)
             && text.includes(`Ticket Price: ${price}`)
+            && text.includes(`Total: ${price * noOfSeats}`)
         });
     }
-
-    formatTime= (time) => {
-        let _time = time.split(':');
-        let hours = Number(_time[0]);
-        let minutes = _time[1];
-        let timeValue = "";
-
-        console.log(hours, minutes);
-
-        if(hours == "00" || hours == "0"){
-            hours = "24";
-        }
-
-        if(hours > 0  && hours <= 12) {
-
-            timeValue += hours < 10 ? "0" + hours : hours;
-
-        } else if(hours > 12) {
-
-        timeValue += (hours - 12);
-        }
-
-        timeValue += ":" + minutes;
-        timeValue += (hours >= 12) ? " pm" : " am";
-
-        console.log(timeValue);
-        return timeValue;
-    }
-
-
-    formattedDateTicketSummaryDialog = async (givenDate) => {
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-          "July", "August", "September", "October", "November", "December"
-        ];
-        let date = new Date(givenDate);
-        return `${monthNames[date.getMonth()].slice(0, 3)} ${date.getDate()}, ${date.getFullYear()}`;
-      }
 
     verifyTicketReservationSummary = (reservation) => {
         const ticketReservationSummary = this.getText(ticketSummary);

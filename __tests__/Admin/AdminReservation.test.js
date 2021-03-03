@@ -202,13 +202,13 @@ describe('Verify reservations on Payment Page', () => {
         expect(await this.paymentSummaryPage.confirmedReservationDialogEmail).toContain(
             "Your receipt has been sent to your email."
             );
-
         expect(await this.paymentSummaryPage.verifyConfirmedReservationDetails(branchName, cinema, movie, formattedDate, formattedTime, seatString, noOfSeats, price)).toEqual(true);
 
         // 17. Close the Confirmed Reservation modal
         await this.paymentSummaryPage.clickCloseButton();
 
         // 18. Verify the admin user should navigated to Movies tab
+        await this.moviesPage.isPageLoaded();
         expect(await this.moviesPage.getCurrentUrl()).toContain('/movies')
 
         // 19. Click LogOut Button

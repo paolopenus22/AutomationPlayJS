@@ -62,9 +62,6 @@ describe('Add Cinema by Admin', () => {
         let hours = 0;
         let minutes = 0;
 
-        // let targetMovieTime = ['11:00:am', '13:30:pm', '16:00:pm']
-        // let ticketPrice = '350';
-        // let movieDates = [];
         let selectedMovieTitles= [];
 
         // Navigate to admin tab
@@ -94,15 +91,10 @@ describe('Add Cinema by Admin', () => {
             cinemasCount = await this.editBranchPage.getCinemasCount();
             cinemaNumber++;
         }
+
         listOfCinemas = await this.editBranchPage.getCinemaList();
-        
-
-        // Add movie schedule
-        //await this.editBranchPage.isPageLoaded();
-        await this.editBranchPage.clickViewSchedules();
-
-
-       // let listOfCinemas = await this.addSchedulePage.getCinemaList();
+    
+        await this.editBranchPage.clickViewSchedules()
 
        //CINEMA 1 SCHEDULES
         for(let i = 1; i < 4; i++) {
@@ -151,64 +143,7 @@ describe('Add Cinema by Admin', () => {
         expect(await this.adminSchedulePage.getCurrentUrl()).toContain('/schedule');
         await this.homePage.clickMoviesTab();
         expect(await this.moviesPage.getListOfMovieTitles()).toEqual(selectedMovieTitles);
-        // let firstDay = new Date();
-        // firstDay.setDate(firstDay.getDate() + 3);
-
-        // let secondDay = new Date();
-        // secondDay.setDate(secondDay.getDate() + 4);
-
-        // let thirdDay = new Date();
-        // thirdDay.setDate(thirdDay.getDate() + 5);
-
-            
-        //     firstDay = firstDay.toISOString();
-        //     secondDay = secondDay.toISOString();
-        //     thirdDay = thirdDay.toISOString();
-
-        //     let first = firstDay.split('T')[0];
-        //     let second = secondDay.split('T')[0];
-        //     let third = thirdDay.split('T')[0];
-
-        //     movieDates.push(first);
-        //     movieDates.push(second);
-        //     movieDates.push(third);
-
-
-        // for(let m=1; m < 4; m++){
-        //     for(let md= 0; md < movieDates.length; md++){
-        //         for(let mt= 0; mt < targetMovieTime.length; mt++){
-        //             let timeValues = targetMovieTime[mt].split(':');
-
-        //             await this.addSchedulePage.isPageLoaded()
-        //             await this.addSchedulePage.addSchedule(listOfCinemas[md],
-        //                                                listOfMovies[md],
-        //                                                     movieDates[md],
-        //                                                     timeValues[0], 
-        //                                                timeValues[1],
-        //                                                     ticketPrice);
-        //             await this.addSchedulePage.isPageLoaded();
-        //             await this.addSchedulePage.clickAddButton();
-
-        //             await this.adminSchedulePage.isPageLoaded();
-        //             await this.adminSchedulePage.viewSpecificCinema(listOfCinemas[md]);
-
-        //             await this.adminSchedulePage.isPageLoaded();
-                    //await this.adminSchedulePage.itemPerPage();
-
-        //             await this.adminSchedulePage.isPageLoaded();
-        //             selectedMovieTitles.push(listOfMovies[md]);
-        //             expect(await this.adminSchedulePage.verifyAddedMovieSchedule(listOfMovies[md])).toBe(true)
-  
-        //             await this.adminSchedulePage.isPageLoaded();
-        //             expect(await this.adminSchedulePage.getCurrentUrl()).toContain('/schedule');
-
-        //             await this.adminSchedulePage.AddMovieSchedule();
-        //         }
-        //     }
-        // }
-        //     await this.homePage.clickMoviesTab();
-
-        //     expect(await this.moviesPage.getListOfMovieTitles()).toEqual(expect.arrayContaining(selectedMovieTitles));
+     ;
     });
 
     afterAll(async () => {

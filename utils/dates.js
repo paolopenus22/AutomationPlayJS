@@ -21,7 +21,6 @@ class Dates {
           "July", "August", "September", "October", "November", "December"
         ];
         let date = new Date(givenDate);
-        console.log(date);
         return `${monthNames[date.getMonth()].slice(0, 3)} ${date.getDate()}, ${date.getFullYear()}`;
     }
 
@@ -30,8 +29,6 @@ class Dates {
         let hours = Number(_time[0]);
         let minutes = _time[1];
         let timeValue = "";
-
-        console.log(hours, minutes);
 
         if(hours == "00" || hours == "0"){
             hours = "24";
@@ -49,7 +46,6 @@ class Dates {
         timeValue += ":" + minutes;
         timeValue += (hours >= 12) ? " pm" : " am";
 
-        console.log(timeValue);
         return timeValue;
     }
 }

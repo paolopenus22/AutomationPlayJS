@@ -40,6 +40,7 @@ class MoviesPage extends BasePage {
             if (await movieCardsTitle[i].getText() === name)
             {
                 card[i].findElement(getTicketButton).click();
+                break;
             }
         }
     }

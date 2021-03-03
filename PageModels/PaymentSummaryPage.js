@@ -17,9 +17,11 @@ let description = By.css('app-payment-summary  div:nth-child(2) > div:nth-child(
 let amount = By.css('app-payment-summary div:nth-child(3) div:nth-child(2)');
 let confirmedDialogBox = By.css('[header="Confirmed Reservation"]');
 let descriptionText = By.css('app-payment-summary div:nth-child(2) div:nth-child(2)');
-let emailText = By.css('div.ui-dialog-content p');
+// let emailText = By.css('div.ui-dialog-content p');
+let emailText = By.css('div.ui-dialog-content.ui-widget-content > div > p');
 let confirmedReservationDialog = By.css('div.ui-dialog-titlebar+div.ui-dialog-content');
-let confirmationDialogEmailText = By.css('div.ui-dialog div p');
+// let confirmationDialogEmailText = By.css('div.ui-dialog div p');
+let confirmationDialogEmailText = By.css('div.ui-dialog-content.ui-widget-content > div > div > p');
 let desc = "";
 let message = "";
 let confirmedReservationDialogEmail = "";
@@ -91,10 +93,10 @@ class PaymentSummaryPage extends BasePage {
         let totalAmount = parseFloat(price * seats.length).toFixed(2);
         return amountText == totalAmount;
     }
+
     getProcessingMessage = async () => {
         await this.driver.wait(until.elementLocated(emailText), 50000);
         await this.driver.findElement(emailText).getText().then((value) => {
-            console.log(value);
             this.message = value;
         });
     }
@@ -104,7 +106,6 @@ class PaymentSummaryPage extends BasePage {
         await this.driver.wait(until.elementLocated(confirmationDialogEmailText), 50000);
 
         await this.driver.findElement(confirmationDialogEmailText).getText().then((value) => {
-            console.log(value);
             this.confirmedReservationDialogEmail = value;
         })
 
@@ -116,13 +117,11 @@ class PaymentSummaryPage extends BasePage {
 
         let formattedTime = `${time.substr(0, time.indexOf(' '))} ${time.slice(-2).toUpperCase()}`
         return await this.driver.findElement(confirmedReservationDialog).getText().then(async (text) =>{
-            console.log(text);
-            console.log(branchName, cinemaName, movieName, date, time, reservedSeats, noOfSeats, price)
             return text.includes(`Movie Title: ${movieName}`)
             && text.includes(`Branch: ${branchName}`)
             && text.includes(`Cinema: ${cinemaName}`)
-            && text.includes(`Screening Date: ${console.log(date)}`)
-            && text.includes(`Screening Time: ${console.log(formattedTime)}`)
+            && text.includes(`Screening Date: ${date}`)
+            && text.includes(`Screening Time: ${formattedTime}`)
             && text.includes(`Selected Seats: ${reservedSeats}`)
             && text.includes(`No. of Seats: ${noOfSeats}`)
             && text.includes(`Ticket Price: ${price}`)
@@ -130,14 +129,6 @@ class PaymentSummaryPage extends BasePage {
         });
     }
 
-    formattedDateTicketSummaryDialog = async (givenDate) => {
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-          "July", "August", "September", "October", "November", "December"
-        ];
-        let date = new Date(givenDate);
-        console.log(date);
-        return `${monthNames[date.getMonth()].slice(0, 3)} ${date.getDate()}, ${date.getFullYear()}`;
-    }
 }
 
 module.exports = PaymentSummaryPage;
