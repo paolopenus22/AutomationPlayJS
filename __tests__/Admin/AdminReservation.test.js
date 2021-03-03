@@ -16,6 +16,7 @@ let PaymentSummaryPage = require('../../PageModels/PaymentSummaryPage');
 let AdminPaymentPage = require('../../PageModels/Admin/AdminPaymentPage');
 let AdminPaymentDetailPage = require('../../PageModels/Admin/AdminPaymentDetailPage');
 let Utils = require('../../utils/cleanup');
+let Dates = require('../../utils/dates');
 let faker = require('faker');
 
 
@@ -65,7 +66,7 @@ describe('Verify reservations on Payment Page', () => {
         this.paymentSummaryPage = new PaymentSummaryPage();
         this.adminPaymentPage = new AdminPaymentPage();
         this.adminPaymentDetailPage = new AdminPaymentDetailPage();
-
+        this.dates = new Dates();
         this.cleanUp = new Utils();
         jest.setTimeout(40000);
         await this.landingPage.navigateToMoviesApp();
@@ -136,7 +137,7 @@ describe('Verify reservations on Payment Page', () => {
         await this.moviesPage.getTicketOfMovie(movie);
 
         
-        let formattedTime = this.ticketReservationPage.formatTime(tartgetTime);
+        let formattedTime = this.dates.formatTime(tartgetTime)
         // 10. Book reservation
         await this.ticketReservationPage.isPageLoaded();
         await this.ticketReservationPage.selectBranchFromDropdown(branchName);
@@ -157,7 +158,8 @@ describe('Verify reservations on Payment Page', () => {
         // f. Time  
         // g. Price 
         // h. Seats selected    
-        expect(await this.ticketReservationPage.checkTicketSummaryDetails(branchName, cinema, movie, addDays, formattedTime, seatString, noOfSeats, price)).toEqual(true);
+        let formattedDate = await this.dates.formatTicketSummaryDate(addDays);
+        expect(await this.ticketReservationPage.checkTicketSummaryDetails(branchName, cinema, movie, formattedDate, formattedTime, seatString, noOfSeats, price)).toEqual(true);
         
         // 12. Proceed to payment
         await this.ticketReservationPage.clickProceedToPayment();
@@ -177,9 +179,9 @@ describe('Verify reservations on Payment Page', () => {
         // 15. Proceed to Payment
         await this.paymentSummaryPage.clickProceedButton();
 
-        await this.paymentSummaryPage.getEmailText();
+        await this.paymentSummaryPage.getProcessingMessage();
         
-        expect(await this.paymentSummaryPage.email).toContain(
+        expect(await this.paymentSummaryPage.message).toContain(
             "Communicating with your bank. Wait for the process to complete.Do not refresh this page."
             );
 
@@ -194,14 +196,20 @@ describe('Verify reservations on Payment Page', () => {
         // h. Seats selected 
         // i. # of seats 
         // j. Total
-        let dialogBoxEmail = "Your receipt has been sent to your email."
-        expect(await this.paymentSummaryPage.verifyConfirmedReservationDetails(dialogBoxEmail, branchName, cinema, movie, addDays, formattedTime, seatString, noOfSeats, price)).toEqual(true);
+
+        await this.paymentSummaryPage.getConfirmedReservationDialogEmail();
+
+        expect(await this.paymentSummaryPage.confirmedReservationDialogEmail).toContain(
+            "Your receipt has been sent to your email."
+            );
+
+        expect(await this.paymentSummaryPage.verifyConfirmedReservationDetails(branchName, cinema, movie, formattedDate, formattedTime, seatString, noOfSeats, price)).toEqual(true);
 
         // 17. Close the Confirmed Reservation modal
         await this.paymentSummaryPage.clickCloseButton();
 
         // 18. Verify the admin user should navigated to Movies tab
-        expect(await moviesPage.getCurrentURL()).toContain('/movies')
+        expect(await this.moviesPage.getCurrentUrl()).toContain('/movies')
 
         // 19. Click LogOut Button
         await this.homePage.clickLogoutButton()

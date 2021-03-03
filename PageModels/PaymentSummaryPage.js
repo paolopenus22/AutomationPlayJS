@@ -19,8 +19,10 @@ let confirmedDialogBox = By.css('[header="Confirmed Reservation"]');
 let descriptionText = By.css('app-payment-summary div:nth-child(2) div:nth-child(2)');
 let emailText = By.css('div.ui-dialog-content p');
 let confirmedReservationDialog = By.css('div.ui-dialog-titlebar+div.ui-dialog-content');
+let confirmationDialogEmailText = By.css('div.ui-dialog div p');
 let desc = "";
-let email = "";
+let message = "";
+let confirmedReservationDialogEmail = "";
 
 class PaymentSummaryPage extends BasePage {
 
@@ -89,15 +91,26 @@ class PaymentSummaryPage extends BasePage {
         let totalAmount = parseFloat(price * seats.length).toFixed(2);
         return amountText == totalAmount;
     }
-    getEmailText = async () => {
+    getProcessingMessage = async () => {
         await this.driver.wait(until.elementLocated(emailText), 50000);
         await this.driver.findElement(emailText).getText().then((value) => {
             console.log(value);
-            this.email = value;
+            this.message = value;
         });
     }
 
-    verifyConfirmedReservationDetails = async (email, branchName, cinemaName, movieName, date, time, reservedSeats, noOfSeats, price) => {
+    getConfirmedReservationDialogEmail = async () => {
+        await this.driver.wait(until.elementLocated(confirmedReservationDialog), 50000);
+        await this.driver.wait(until.elementLocated(confirmationDialogEmailText), 50000);
+
+        await this.driver.findElement(confirmationDialogEmailText).getText().then((value) => {
+            console.log(value);
+            this.confirmedReservationDialogEmail = value;
+        })
+
+    }
+
+    verifyConfirmedReservationDetails = async (branchName, cinemaName, movieName, date, time, reservedSeats, noOfSeats, price) => {
         await this.driver.wait(until.elementLocated(confirmedReservationDialog), 50000);
         await this.driver.wait(until.elementLocated(closeButton), 50000);
 
@@ -105,17 +118,25 @@ class PaymentSummaryPage extends BasePage {
         return await this.driver.findElement(confirmedReservationDialog).getText().then(async (text) =>{
             console.log(text);
             console.log(branchName, cinemaName, movieName, date, time, reservedSeats, noOfSeats, price)
-            return text.includes(`Your receipt has been sent to your email.`)
-            && text.includes(`Movie Title: ${movieName}`)
+            return text.includes(`Movie Title: ${movieName}`)
             && text.includes(`Branch: ${branchName}`)
             && text.includes(`Cinema: ${cinemaName}`)
-            && text.includes(`Screening Date: ${await this.formattedDateTicketSummaryDialog(date)}`)
-            && text.includes(`Screening Time: ${formattedTime}`)
+            && text.includes(`Screening Date: ${console.log(date)}`)
+            && text.includes(`Screening Time: ${console.log(formattedTime)}`)
             && text.includes(`Selected Seats: ${reservedSeats}`)
             && text.includes(`No. of Seats: ${noOfSeats}`)
             && text.includes(`Ticket Price: ${price}`)
-            && text.includes(`Total: ${price*reservedSeats.length}`)
+            && text.includes(`Total: ${price * noOfSeats}`)
         });
+    }
+
+    formattedDateTicketSummaryDialog = async (givenDate) => {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+        ];
+        let date = new Date(givenDate);
+        console.log(date);
+        return `${monthNames[date.getMonth()].slice(0, 3)} ${date.getDate()}, ${date.getFullYear()}`;
     }
 }
 

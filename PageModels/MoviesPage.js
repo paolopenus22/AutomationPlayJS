@@ -43,5 +43,9 @@ class MoviesPage extends BasePage {
             }
         }
     }
+    getCurrentUrl = async () => {
+        let currentUrl = await this.driver.getCurrentUrl();
+        return currentUrl;
+    }
 }
 module.exports = MoviesPage;

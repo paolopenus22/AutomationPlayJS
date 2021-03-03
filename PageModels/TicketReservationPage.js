@@ -130,7 +130,7 @@ class TicketRegistrationPage extends BasePage {
             return text.includes(`Movie Title: ${movieName}`)
             && text.includes(`Branch: ${branchName}`)
             && text.includes(`Cinema: ${cinemaName}`)
-            && text.includes(`Screening Date: ${await this.formattedDateTicketSummaryDialog(date)}`)
+            && text.includes(`Screening Date: ${date}`)
             && text.includes(`Screening Time: ${formattedTime}`)
             && text.includes(`Selected Seats: ${reservedSeats}`)
             && text.includes(`No. of Seats: ${noOfSeats}`)
