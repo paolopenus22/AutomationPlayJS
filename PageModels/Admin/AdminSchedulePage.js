@@ -42,7 +42,6 @@ class AdminSchedulePage extends BasePage {
         await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(viewCinemaDropdown)), 50000);
         await this.driver.wait(until.elementIsVisible(await this.driver.findElement(viewCinemaDropdown)), 50000);
         let dropdown = await this.driver.findElement(viewCinemaDropdown);
-        //await dropdown.click();
         let dropdownElement = await dropdown.findElements(By.css('option'));
 
         for (let i = 1; i < dropdownElement.length; i++) {
@@ -56,16 +55,6 @@ class AdminSchedulePage extends BasePage {
         }
     }
 
-    verifyIfElementExist = async() => {
-        try {
-            await this.driver.findElement(scheduleCard);
-            return true;
-        } catch (error) {
-            return false;
-        }
-    }
-
-
     itemPerPage = async() => {
         
         let options = await this.driver.wait(until.elementLocated(itemsPerPage), 50000)
@@ -76,7 +65,6 @@ class AdminSchedulePage extends BasePage {
 
         for(let i = 0; i < selectedOption.length; i++)
         {
-            // let text = await selectedOption[i].getText();
             await this.driver.wait(until.elementIsVisible(selectedOption[i]), 50000);
             if(await selectedOption[i].getText() == `18`)
             {
@@ -94,26 +82,7 @@ class AdminSchedulePage extends BasePage {
         return listOfTitles;
     }
 
-    formatDate = async(movieDate, movieTime) => {
-        let timeValues = movieTime.split(':');
-        let hourValue = "";
-
-        if(timeValues[2] == "pm"){
-            let integerHour = parseInt(timeValues[0]);
-            hourValue = integerHour - 12;
-            hourValue = `0${hourValue}`;
-        }else {
-            hourValue = timeValues[0];
-        }
-
-        let scheduleTobeChecked = movieDate + ' ' + hourValue + ':' + timeValues[1] + ' ' + timeValues[2];
-
-        return scheduleTobeChecked;
-    }
-
     verifyAddedMovieSchedule= async () => {
-       // let isDisplayed = false;
-       // let scheduleCardMovieTitle = "";
 
         await this.driver.wait(until.elementsLocated(movieName), 5000);
         let listOfScheduleCards = await this.driver.findElements(movieName);
@@ -121,11 +90,6 @@ class AdminSchedulePage extends BasePage {
         for (let i = 1; i <  listOfScheduleCards.length; i++) {
             await this.driver.wait(until.elementIsVisible(listOfScheduleCards[i]), 5000);
             let scheduleCardMovieTitle = await listOfScheduleCards[i].getText();
-
-            // if (scheduleCardMovieTitle.includes(movieTitle)) {
-            //     isDisplayed = true;
-            //     break;
-            // }   
             return scheduleCardMovieTitle;
         }     
         

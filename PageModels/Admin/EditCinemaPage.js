@@ -22,12 +22,14 @@ class EditCinemaPage extends BasePage {
     }
 
     enterRows = async (rowValue) => {
+        await this.driver.wait(until.elementLocated(rows), 5000);
         let row = await this.driver.findElement(rows);
         await row.clear();
         await this.enterText(rows, rowValue);
     }
 
     enterColumns = async (columnValue) => {
+        await this.driver.wait(until.elementLocated(columns), 5000);
         let column = await this.driver.findElement(columns);
         await column.clear();
         await this.enterText(columns, columnValue);

@@ -40,8 +40,13 @@ class MoviesPage extends BasePage {
             if (await movieCardsTitle[i].getText() === name)
             {
                 card[i].findElement(getTicketButton).click();
+                break;
             }
         }
+    }
+    getCurrentUrl = async () => {
+        let currentUrl = await this.driver.getCurrentUrl();
+        return currentUrl;
     }
 }
 module.exports = MoviesPage;
