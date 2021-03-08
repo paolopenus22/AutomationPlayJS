@@ -7,6 +7,7 @@ let movieCardsDetails = By.css('.movie-card div:nth-child(2) a');
 let getTicketButton = By.css('button:nth-child(2)');
 
 
+let movieList = By.css('div[class="text-center"]:nth-child(2) a');
 class MoviesPage extends BasePage {
 
 
@@ -46,6 +47,14 @@ class MoviesPage extends BasePage {
     getCurrentUrl = async () => {
         let currentUrl = await this.driver.getCurrentUrl();
         return currentUrl;
+    }
+
+    verifyMoviesDisplayed = async () => {
+        let movies = await this.driver.findElements(movieList);
+        console.log(movies.length);
+        if(movies.length > 0) {
+            return true;
+        }
     }
 }
 module.exports = MoviesPage;

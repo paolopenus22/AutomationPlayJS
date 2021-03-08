@@ -136,8 +136,8 @@ class TicketRegistrationPage extends BasePage {
         });
     }
 
-    verifyTicketReservationSummary = (reservation) => {
-        const ticketReservationSummary = this.getText(ticketSummary);
+    verifyTicketReservationSummary = async (reservation) => {
+        const ticketReservationSummary = await this.getText(ticketSummary);
         if (ticketReservationSummary.includes(reservation)) {
             return true;
         }   
