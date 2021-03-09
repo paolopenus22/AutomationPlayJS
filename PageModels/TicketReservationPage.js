@@ -6,21 +6,25 @@ let selectCinema = By.css('[formcontrolname="cinemaId"]');
 let chooseADate = By.css('[formcontrolname="watchDate"]');
 let selectTime = By.css('[formcontrolname="scheduleId"]');
 let selectFromDropdown = By.css('[class="cdk-overlay-pane"] mat-option span');
-let selectSeatPlan = By.css('.seat-plan .seat.ng-star-inserted > span');
+let seatPlan = By.css('app-seat-plan');
+let movieBanner = By.css('app-movie-movie-detail .img-fluid');
 let availableSeat =  By.css('.seat-plan [class="seat ng-star-inserted"] span');
 let confirmReservationButton = By.css('button[type="submit"]');
 let ticketSummary = By.css('app-reservation-summary div div');
 let proceedPaymentButton = By.css('button[class="btn btn-success m-2"]');
 let reservationDetails = By.css('.col-md-12.reservation-details');
 let ticketSummaryForm = By.css('app-reservation-summary > div');
+let appSeatTaken = By.css('app-seat [class="seat ng-star-inserted taken"]');
 
 class TicketRegistrationPage extends BasePage {
 
     selectBranchFromDropdown = async (branch) => {
+
         this.clickElement(selectBranch);
+
         await this.driver.wait(until.elementsLocated(selectFromDropdown), 50000);
         let selectBranchList = await this.driver.findElements(selectFromDropdown);
-        for (let i = 0; i < selectBranchList.length; i++) {
+        for (let i = 0; i < await selectBranchList.length; i++) {
 
             await this.driver.wait(until.elementIsVisible(selectBranchList[i]), 50000);
 
@@ -94,6 +98,7 @@ class TicketRegistrationPage extends BasePage {
     selectSeat = async(seats) => {
 
         let reservedSeats = [];
+        await this.driver.wait(until.elementsLocated(seatPlan), 50000);
         await this.driver.wait(until.elementsLocated(availableSeat), 50000);
         await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(availableSeat)), 50000);
         await this.driver.wait(until.elementIsVisible(await this.driver.findElement(availableSeat)), 50000);
@@ -148,7 +153,12 @@ class TicketRegistrationPage extends BasePage {
     }
     
     isPageLoaded = async () => {
-        return await this.verifyPageLoad(reservationDetails);
+        await this.verifyPageLoad(reservationDetails) && this.verifyPageLoad(movieBanner);
+    }
+
+    GetTotalCountOfReserveSeat = async() => {
+        let seats = await this.driver.findElements(appSeatTaken);
+        return seats.length;     
     }
 }
 

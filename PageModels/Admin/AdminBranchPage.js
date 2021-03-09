@@ -61,7 +61,7 @@ class AdminBranchPage extends BasePage {
     }
     
     isPageLoaded = async () => {
-        this.verifyPageLoad(branchLink) && this.verifyPageLoad(branchCard);
+        await this.verifyPageLoad(branchLink) && this.verifyPageLoad(branchCard);
     }
 
     SearchForBranchName = async (name) => {
@@ -112,22 +112,13 @@ class AdminBranchPage extends BasePage {
         await this.driver.wait(until.elementLocated(branchCard), 10000);
         await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(branchCard)), 50000);
         await this.driver.wait(until.elementIsVisible(await this.driver.findElement(branchCard)), 50000);        
-        let cards = await this.driver.findElements(branchCard);      
-        console.log(cards.length);      
+        let cards = await this.driver.findElements(branchCard);        
         let index = Math.floor(Math.random() * cards.length);
-        console.log(index);
 
-        //await this.driver.wait(until.elementLocated(branchLink), 10000);
-        //await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(branchLink)), 50000);
-        //await this.driver.wait(until.elementIsVisible(await this.driver.findElement(branchLink)), 50000);
-        console.log('branch found');
-        const branchLinks = await cards[index].findElement(branchLink);
-        await this.driver.wait(until.elementLocated(branchLinks), 10000);
-        await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(branchLinks)), 50000);
-        await this.driver.wait(until.elementIsVisible(await this.driver.findElement(branchLinks)), 50000);
-        await this.clickElement(branchLinks)// branchLinks.click();
-        
-        console.log(`branch link ${branchLinks.length}`);
+        await this.driver.wait(until.elementLocated(branchLink), 10000);
+        await this.driver.wait(until.elementIsEnabled(await this.driver.findElement(branchLink)), 50000);
+        await this.driver.wait(until.elementIsVisible(await this.driver.findElement(branchLink)), 50000);
+        await cards[index].findElement(branchLink).click();        
         return new EditBranchPage();
     }
 

@@ -70,6 +70,7 @@ describe('Create a reservation as customer', () => {
 
     let reservedSeats;
     let seatList;
+    let seatList2;
     let formattedDate;
     let formattedPaymentSummaryDate;
     
@@ -108,10 +109,6 @@ describe('Create a reservation as customer', () => {
         await this.adminPage.isPageLoaded();
         await this.adminPage.selectMaintainModule('Branch');
 
-        // await this.addBranchPage.clickAddBranchButton();
-        // await this.addBranchPage.inputBranchDetails(newBranch, city);
-        // await this.addBranchPage.clickAddButton();
-
         await this.adminBranchPage.isPageLoaded();
         await this.adminBranchPage.ClickRandomBranchLink();
 
@@ -120,6 +117,7 @@ describe('Create a reservation as customer', () => {
         await this.addCinemaPage.inputCinemaName(cinema);
 
         await this.editBranchPage.isPageLoaded();
+        branch = await this.editBranchPage.getBranchName();
         await this.editBranchPage.clickCinemaLink(cinema);  
         await this.editCinemaPage.isPageLoaded();
         await this.editCinemaPage.enterRows(row);
@@ -212,7 +210,7 @@ describe('Create a reservation as customer', () => {
 
         // 13. Verify that there is/are existing movie/s displayed
         await this.moviesPage.isPageLoaded(); 
-        expect(await this.moviesPage.verifyMoviesDisplayed).toEqual(true);
+        expect(await this.moviesPage.verifyMoviesDisplayed()).toEqual(true);
 
         // 14. Click 'Get Ticket' for the movie created on the previous test
         await this.moviesPage.isPageLoaded();
@@ -227,13 +225,13 @@ describe('Create a reservation as customer', () => {
 
         // 16. Reserve 8 seats and confirm the reservation
         reservedSeats = await this.ticketReservationPage.selectSeat(customer2seat);
-        seatList = reservedSeats.join(', ');
+        seatList2 = reservedSeats.join(', ');
         await this.ticketReservationPage.clickConfirmReservation();
 
         // 17. Verify Ticket Summary (Branch, Cinema, Movie Title, Screen Date, Screen Time, Prince, Total, Selected Seats, No. of Seats)
         await this.ticketReservationPage.verifyTicketReservationSummary(title);
         formattedDate = await this.dates.formatTicketSummaryDate(startDate);
-        expect(await this.ticketReservationPage.checkTicketSummaryDetails(branch, cinema, title, formattedDate, movieTime, seatList, customer1seat, price)).toEqual(true);
+        expect(await this.ticketReservationPage.checkTicketSummaryDetails(branch, cinema, title, formattedDate, movieTime, seatList2, customer2seat, price)).toEqual(true);
 
         // 18. Click Proceed to payment and input Cardholder Name, Credit Card No., CVV and Expiry Date.
         await this.ticketReservationPage.clickProceedToPayment();
@@ -243,9 +241,9 @@ describe('Create a reservation as customer', () => {
 
         // 19. Verify Payment Summary (Description and Total Amount)
         await this.paymentSummaryPage.getDescriptionText();
-        formattedPaymentSummaryDate = await this.paymentSummaryPage.formatPaymentSummaryDate(startDate)
-        expect(await this.paymentSummaryPage.desc).toContain(`${title} | ${branch} | ${cinema} | ${formattedPaymentSummaryDate} ${movieTime} | ${seatList}`);
-        
+        formattedPaymentSummaryDate = await this.paymentSummaryPage.formatPaymentSummaryDate(startDate);
+        expect(await this.paymentSummaryPage.desc).toContain(`${title} | ${branch} | ${cinema} | ${formattedPaymentSummaryDate} ${movieTime} | ${seatList2}`);
+
         // 20. Proceed to Payment
         await this.paymentSummaryPage.clickProceedButton();
         await this.paymentSummaryPage.getProcessingMessage();
@@ -255,7 +253,7 @@ describe('Create a reservation as customer', () => {
             // Branch Name, Cinema Name, Movie Title, Date, Time, Prince, Seats selected, No. of Seats and Total)
         await this.paymentSummaryPage.getConfirmedReservationDialogEmail();
         expect(await this.paymentSummaryPage.confirmedReservationDialogEmail).toContain("Your receipt has been sent to your email.");
-        expect(await this.paymentSummaryPage.verifyConfirmedReservationDetails(branch, cinema, title, formattedDate, movieTime, seatList, customer2seat, price)).toEqual(true);
+        expect(await this.paymentSummaryPage.verifyConfirmedReservationDetails(branch, cinema, title, formattedDate, movieTime, seatList2, customer2seat, price)).toEqual(true);
 
         // 22. Close the Confirmed Reservation modal
         await this.paymentSummaryPage.clickCloseButton();
@@ -275,11 +273,10 @@ describe('Create a reservation as customer', () => {
         await this.ticketReservationPage.selectTimeFromDropdown(movieTime);
 
         // 26. Verify 17 seats reserved
-        await this.editCinemaPage.isPageLoaded();
-        expect(await this.editCinemaPage.GetTotalCountOfDisableSeat()).toBe(17);
+        expect(await this.ticketReservationPage.GetTotalCountOfReserveSeat()).toBe(17);
 
         // 27. Log out
-        await this.homePage.clickLogoutButton();
+        //await this.homePage.clickLogoutButton();
     });
 
     afterAll(async () => {
@@ -287,7 +284,6 @@ describe('Create a reservation as customer', () => {
         await this.cleanUp.deleteUser(adminEmail);
         await this.cleanUp.deleteUser(customer1userEmail);
         await this.cleanUp.deleteUser(customer2userEmail);
-        await this.cleanUp.deleteUser(cinema);
-        await this.cleanUp.deleteBranch(newBranch);
+        await this.cleanUp.deleteCinema(cinema);
     });
 })

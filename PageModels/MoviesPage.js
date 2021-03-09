@@ -1,6 +1,6 @@
 const { By, Key, until } = require("selenium-webdriver");
 const BasePage = require("../PageModels/BasePage");
-
+const TicketReservationPage = require("../PageModels/TicketReservationPage");
 
 let movieCard = By.css('app-movie-card');
 let movieCardsDetails = By.css('.movie-card div:nth-child(2) a');
@@ -27,7 +27,7 @@ class MoviesPage extends BasePage {
     }
 
     isPageLoaded = async () => {
-        return await this.verifyPageLoad(movieCard) && this.verifyPageLoad(movieCardsDetails);
+        await this.verifyPageLoad(movieCard) && this.verifyPageLoad(movieCardsDetails);
     }
 
     getTicketOfMovie = async (name)=> {
@@ -43,6 +43,7 @@ class MoviesPage extends BasePage {
                 break;
             }
         }
+        //return new TicketReservationPage();
     }
     getCurrentUrl = async () => {
         let currentUrl = await this.driver.getCurrentUrl();
@@ -51,8 +52,7 @@ class MoviesPage extends BasePage {
 
     verifyMoviesDisplayed = async () => {
         let movies = await this.driver.findElements(movieList);
-        console.log(movies.length);
-        if(movies.length > 0) {
+        if(await movies.length > 0) {
             return true;
         }
     }
