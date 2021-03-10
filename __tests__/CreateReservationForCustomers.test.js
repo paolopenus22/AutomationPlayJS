@@ -46,13 +46,11 @@ describe('Create a reservation as customer', () => {
 
     let uniqueNum = Math.floor(Math.random() * 1000);
     let cinema = `Cinema ${uniqueNum + 1}`;
-    let row = 10;
-    let column = 10;
+    let row = 8;
+    let column = 12;
 
     let title = 'Captain America: Civil War';
     let branch = 'Circuit Makati';
-    let city = faker.address.city();
-    let newBranch = `SM ${city}`;
 
     let startDate = new Date();
     startDate.setDate(startDate.getDate() + 5);
@@ -63,14 +61,11 @@ describe('Create a reservation as customer', () => {
     let movieTime = `${hr}:${min} am`;
     
     let customer1cardHolderName = `${customer1firstName} ${customer1lastName}`;
-    let customer2cardHolderName = `${customer1firstName} ${customer1lastName}`;    
+    let customer2cardHolderName = `${customer2firstName} ${customer2lastName}`;    
     let creditCardNum = '1234567890123456';
     let cvv = '123';
     let expiryDate = '10/30';
 
-    let reservedSeats;
-    let seatList;
-    let seatList2;
     let formattedDate;
     let formattedPaymentSummaryDate;
     
@@ -93,7 +88,7 @@ describe('Create a reservation as customer', () => {
         this.paymentSummaryPage = new PaymentSummaryPage();
         this.cleanUp = new Utils();
         this.dates = new Dates();
-        jest.setTimeout(40000);
+        jest.setTimeout(80000);
         await this.landingPage.navigateToMoviesApp();
         await this.landingPage.clickRegisterButton();
         await this.registerPage.inputUserDetails(adminEmail, adminPassword, adminFirstName, adminMiddleName, adminLastName, adminBday);
@@ -164,8 +159,8 @@ describe('Create a reservation as customer', () => {
         await this.ticketReservationPage.selectTimeFromDropdown(movieTime);
 
         // 4. Reserve 9 seats and confirm the reservation
-        reservedSeats = await this.ticketReservationPage.selectSeat(customer1seat);
-        seatList = reservedSeats.join(', ');
+        let reservedSeats = await this.ticketReservationPage.selectSeat(customer1seat);
+        let seatList = reservedSeats.join(', ');
         await this.ticketReservationPage.clickConfirmReservation();
 
         // 5. Verify Ticket Summary (Branch, Cinema, Movie Title, Screen Date, Screen Time, Prince, Total, Selected Seats, No. of Seats)
@@ -224,8 +219,8 @@ describe('Create a reservation as customer', () => {
         await this.ticketReservationPage.selectTimeFromDropdown(movieTime);
 
         // 16. Reserve 8 seats and confirm the reservation
-        reservedSeats = await this.ticketReservationPage.selectSeat(customer2seat);
-        seatList2 = reservedSeats.join(', ');
+        let reservedSeats2 = await this.ticketReservationPage.selectSeat(customer2seat);
+        let seatList2 = reservedSeats2.join(', ');
         await this.ticketReservationPage.clickConfirmReservation();
 
         // 17. Verify Ticket Summary (Branch, Cinema, Movie Title, Screen Date, Screen Time, Prince, Total, Selected Seats, No. of Seats)
@@ -236,7 +231,7 @@ describe('Create a reservation as customer', () => {
         // 18. Click Proceed to payment and input Cardholder Name, Credit Card No., CVV and Expiry Date.
         await this.ticketReservationPage.clickProceedToPayment();
         await this.paymentSummaryPage.isPageLoaded();
-        await this.paymentSummaryPage.inputPaymentDetails(customer1cardHolderName, creditCardNum, cvv, expiryDate);
+        await this.paymentSummaryPage.inputPaymentDetails(customer2cardHolderName, creditCardNum, cvv, expiryDate);
         await this.paymentSummaryPage.clickProceedButton();
 
         // 19. Verify Payment Summary (Description and Total Amount)
@@ -273,10 +268,10 @@ describe('Create a reservation as customer', () => {
         await this.ticketReservationPage.selectTimeFromDropdown(movieTime);
 
         // 26. Verify 17 seats reserved
-        expect(await this.ticketReservationPage.GetTotalCountOfReserveSeat()).toBe(17);
+        expect(await this.ticketReservationPage.getTotalCountOfReserveSeat()).toBe(17);
 
         // 27. Log out
-        //await this.homePage.clickLogoutButton();
+        await this.homePage.clickLogoutButton();
     });
 
     afterAll(async () => {

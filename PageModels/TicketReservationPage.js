@@ -96,7 +96,7 @@ class TicketRegistrationPage extends BasePage {
     }
 
     selectSeat = async(seats) => {
-
+        await this.driver.sleep(1000);
         let reservedSeats = [];
         await this.driver.wait(until.elementsLocated(seatPlan), 50000);
         await this.driver.wait(until.elementsLocated(availableSeat), 50000);
@@ -156,7 +156,8 @@ class TicketRegistrationPage extends BasePage {
         await this.verifyPageLoad(reservationDetails) && this.verifyPageLoad(movieBanner);
     }
 
-    GetTotalCountOfReserveSeat = async() => {
+    getTotalCountOfReserveSeat = async () => {
+        await this.driver.sleep(3000);
         let seats = await this.driver.findElements(appSeatTaken);
         return seats.length;     
     }
