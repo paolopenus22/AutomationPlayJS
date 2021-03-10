@@ -136,7 +136,7 @@ describe('Create a reservation as customer', () => {
         await this.homePage.clickLogoutButton();
     });
 
-    test('Login as Customer 1', async () => {
+    test('Login as Customer 1 and 2', async () => {
         await this.loginPage.isPageLoaded();
         await this.landingPage.clickRegisterButton();
 
