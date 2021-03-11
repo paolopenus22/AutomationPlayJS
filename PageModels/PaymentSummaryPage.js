@@ -108,7 +108,7 @@ class PaymentSummaryPage extends BasePage {
         await this.driver.findElement(confirmationDialogEmailText).getText().then((value) => {
             this.confirmedReservationDialogEmail = value;
         })
-
+        await this.driver.sleep(2000);
     }
 
     verifyConfirmedReservationDetails = async (branchName, cinemaName, movieName, date, time, reservedSeats, noOfSeats, price) => {

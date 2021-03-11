@@ -8,13 +8,13 @@ let adminBtn = By.css('a[href="/admin"]');
 class LandingPage extends BasePage {
 
     clickLoginButton = async () => {
-        this.clickElement(loginBtn);
+        await this.clickElement(loginBtn);
     }
     clickRegisterButton = async () => {
-        this.clickElement(registerBtn);
+        await this.clickElement(registerBtn);
     }
     isPageLoaded = async () => {
-        return this.verifyPageLoad(loginBtn) && this.verifyPageLoad(registerBtn);
+        await this.verifyPageLoad(loginBtn) && this.verifyPageLoad(registerBtn);
     }
 }
 module.exports = LandingPage;
