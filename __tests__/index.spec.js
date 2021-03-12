@@ -1,0 +1,10 @@
+require('../__tests__/Login/CreateAdminAccount');
+require('../__tests__/Login/CreateNormalAccount');
+require('../__tests__/Login/ErrorMessageForNegativeScenarios');
+require('../__tests__/Admin/AddBranches');
+require('../__tests__/Admin/AddCinema');
+require('../__tests__/Admin/AddMovieSchedule');
+require('../__tests__/Admin/AdminReservation.test');
+require('../__tests__/Admin/ManageCinemaSeatPlan.test');
+require('../__tests__/Admin/ReservationOnPaymentsPage.test');
+require('../__tests__/Customer/CreateReservationForCustomers.test');
