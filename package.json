@@ -20,7 +20,17 @@
     "jest-cli": "^26.4.2",
     "selenium-webdriver": "^4.0.0-alpha.7"
   },
+  "jest": {
+    "reporters": [
+      "default",
+      ["jest-html-reporters", {
+        "filename": "Execution_Report.html",
+        "publicPath": "./Report"
+      }]
+    ]
+  },
   "devDependencies": {
-    "jest": "^26.4.2"
+    "jest": "^26.4.2",
+    "jest-html-reporters": "^2.1.2"
   }
 }
