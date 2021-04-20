@@ -25,7 +25,6 @@ describe('Add Cinema by Admin', () => {
     let adminBday = faker.date.past(40).toISOString();
 
     let cinemaNumber = Math.floor(Math.random() * 1000);
-    let cinemaName = `Cinema ${cinemaNumber + 1}`;
     let movies = ['Captain America: Civil War','Spider-Man: Homecoming','The Avengers'];
 
 
@@ -82,7 +81,8 @@ describe('Add Cinema by Admin', () => {
         
         // Create until there are atleast 3 cinemas on the selected branch
         while (cinemasCount < 3) {
-            
+            let cinemaName = `Cinema ${cinemaNumber}`;
+
             await this.editBranchPage.isPageLoaded();
             await this.editBranchPage.clickAddButton();
 
@@ -90,6 +90,7 @@ describe('Add Cinema by Admin', () => {
             await this.addCinemaPage.inputCinemaName(cinemaName);
             cinemasCount = await this.editBranchPage.getCinemasCount();
             cinemaNumber++;
+            console.log(cinemaNumber);
         }
 
         listOfCinemas = await this.editBranchPage.getCinemaList();
@@ -137,12 +138,12 @@ describe('Add Cinema by Admin', () => {
             await this.adminSchedulePage.viewSpecificCinema(listOfCinemas[i]);
             await this.adminSchedulePage.itemPerPage();
             await this.adminSchedulePage.isPageLoaded();
-            //  expect(await this.adminSchedulePage.verifyAddedMovieSchedule()).toContain(movies[i]);
+            expect(await this.adminSchedulePage.verifyAddedMovieSchedule()).toContain(movies[i]);
         }
 
         expect(await this.adminSchedulePage.getCurrentUrl()).toContain('/schedule');
         await this.homePage.clickMoviesTab();
-        // expect(await this.moviesPage.getListOfMovieTitles()).toEqual(selectedMovieTitles);
+        expect(await this.moviesPage.getListOfMovieTitles()).toEqual(selectedMovieTitles);
      ;
     });
 
