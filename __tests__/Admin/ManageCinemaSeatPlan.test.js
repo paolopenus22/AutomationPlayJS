@@ -50,7 +50,7 @@ describe('Manage Cinema Seat Plan', () => {
 
         // 3. Select branch from dropdown (Maintain Module)
         await this.adminPage.isPageLoaded();
-        await this.adminPage.selectMaintainModuleBranch();
+        await this.adminPage.selectMaintainModule('Branch');
 
         // 4. Select Random Branch
         await this.adminBranchPage.isPageLoaded();
@@ -111,10 +111,10 @@ describe('Manage Cinema Seat Plan', () => {
             }
         }
         // 11 a. Verify the count of disabled seats
-        expect(await this.editCinemaPage.GetTotalCountOfDisableSeat()).toBe(50);
+        expect(await this.editCinemaPage.GetTotalCountOfDisableSeat()).toEqual(50);
 
         // 11 b. Verify each disabled seats text
-        expect(await this.editCinemaPage.VerifyTextOfDisableSeat()).toBe('');
+        expect(await this.editCinemaPage.VerifyTextOfDisableSeat()).toEqual('');
 
     });
 
