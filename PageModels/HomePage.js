@@ -23,7 +23,7 @@ class HomePage extends BasePage {
     verifyAdminTabisDisplayed = async () => {
         try 
         {
-            return await this.verifyPageLoad(adminTab);
+            return await this.verifyPageLoad(adminTab)
         } 
         catch(e) {
             return false;
