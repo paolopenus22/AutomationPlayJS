@@ -3,6 +3,7 @@ let RegisterPage = require('../../PageModels/RegisterPage');
 let LoginPage = require('../../PageModels/LoginPage');
 let HomePage = require('../../PageModels/HomePage');
 let AdminPage = require('../../PageModels/Admin/AdminPage');
+let AdminBranchPage = require('../../PageModels/Admin/AdminBranchPage');
 let AddBranchPage = require('../../PageModels/Admin/AddBranchPage');
 let Utils = require('../../utils/cleanup');
 let faker = require('faker');
@@ -25,6 +26,7 @@ describe('Add Branches by Admin', () => {
         this.homePage = new HomePage();
         this.adminPage = new AdminPage();
         this.addBranchPage = new AddBranchPage();
+        this.adminBranchPage = new AdminBranchPage();
         this.cleanUp = new Utils();
         jest.setTimeout(40000);
         await this.landingPage.navigateToMoviesApp();
@@ -44,8 +46,9 @@ describe('Add Branches by Admin', () => {
         await this.adminPage.isPageLoaded();
         await this.adminPage.selectMaintainModule('Branch');
 
+        await this.adminBranchPage.isPageLoaded();
+        await this.adminBranchPage.clickAddBranchButton();
         await this.addBranchPage.isPageLoaded();
-        await this.addBranchPage.clickAddBranchButton();
         await this.addBranchPage.inputBranchDetails(newBranch, city);
         await this.addBranchPage.clickAddButton();
         await this.addBranchPage.selectMaxTotalItems('18');

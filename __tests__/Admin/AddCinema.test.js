@@ -75,12 +75,10 @@ describe('Add Cinema by Admin', () => {
         expect(await this.editBranchPage.GetStringListOfCinema()).toContain(cinema1);
         expect(await this.editBranchPage.GetStringListOfCinema()).toContain(cinema2);
 
-         await this.editBranchPage.clickViewSchedules();
+        await this.editBranchPage.clickViewSchedules();
 
-        //await this.adminSchedulePage.isPageLoaded();
         await this.adminSchedulePage.AddMovieSchedule();
 
-       // await this.addSchedulePage.isPageLoaded();
         await this.addSchedulePage.isPageLoaded();
         expect(await this.addSchedulePage.getCinemaNames()).toContain(cinema1);
         expect(await this.addSchedulePage.getCinemaNames()).toContain(cinema2);
@@ -88,8 +86,8 @@ describe('Add Cinema by Admin', () => {
     
     afterAll(async () => {
         await this.landingPage.closeMoviesApp();
-        await this.cleanUp.deleteCinema(Cinema1);
-        await this.cleanUp.deleteCinema(Cinema2);
+        await this.cleanUp.deleteCinema(cinema1);
+        await this.cleanUp.deleteCinema(cinema2);
         await this.cleanUp.deleteUser(adminEmail);
      });
 });

@@ -13,6 +13,7 @@ let nextPagination = By.css('app-admin [class="pagination-next"]');
 let previousPagination = By.css('app-admin [class="pagination-previous"]');
 let branchLogo = By.css('div.text-center a img');
 let branchLink = By.css('div:nth-child(2) a');
+let addBranchButton = By.css('button[class="btn btn-outline-primary mr-3"]');
 
 class AdminBranchPage extends BasePage {
 
@@ -122,5 +123,8 @@ class AdminBranchPage extends BasePage {
         return new EditBranchPage();
     }
 
+    clickAddBranchButton = async () => {
+        await this.clickElement(addBranchButton);
+    }
 }
 module.exports = AdminBranchPage;

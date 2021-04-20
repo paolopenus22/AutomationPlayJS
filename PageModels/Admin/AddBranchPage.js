@@ -1,7 +1,6 @@
 const { By, until } = require("selenium-webdriver");
 const BasePage = require("../BasePage");
 
-let addBranchButton = By.css('button[class="btn btn-outline-primary mr-3"]');
 let nameField = By.css('input[formcontrolname="name"]');
 let addressField = By.css('textarea[formcontrolname="address"]');
 let nameErrorMsg = By.css('div[class="text-danger"] span');
@@ -12,9 +11,6 @@ let addBranchHeader = By.css('app-branch-list');
 let itemsPerPage = By.css('select[name="itemsPerPage"] option');
 
 class AddBranchPage extends BasePage {
-    clickAddBranchButton = async () => {
-        await this.clickElement(addBranchButton);
-    }
     inputBranchDetails = async (name, address) => {
         await this.enterText(nameField, name);
         await this.enterText(addressField, address);
