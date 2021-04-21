@@ -54,7 +54,8 @@ class EditBranchPage extends BasePage {
         return count;
     }
 
-    clickCinemaLink = async (cinemaName) => {        
+    clickCinemaLink = async (cinemaName) => {      
+        await this.driver.sleep(3000);  
         let list = await this.driver.findElements(cinemaItems);            
         for(let i = 0; i < list.length; i++)
         {
