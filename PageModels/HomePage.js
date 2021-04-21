@@ -37,6 +37,7 @@ class HomePage extends BasePage {
     }
     clickMoviesTab = async () => {
         await this.clickElement(moviesTab);
+        await this.driver.sleep(3000);
     }
     clickBranchesTab = async () => {
         await this.clickElement(branchesTab);

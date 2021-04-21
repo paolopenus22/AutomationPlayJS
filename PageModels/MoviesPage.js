@@ -21,9 +21,9 @@ class MoviesPage extends BasePage {
         for (let i = 0; i < movieCardsTitle.length; i++) {
             await this.driver.wait(until.elementIsVisible(movieCardsTitle[i]), 50000);
             movieTitles = await movieCardsTitle[i].getText();
-            movieTitleList.push(movieTitles);
+           // movieTitleList.push(movieTitles);
         }
-        return movieTitleList;
+        return movieTitles;
     }
 
     isPageLoaded = async () => {

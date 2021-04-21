@@ -143,7 +143,7 @@ describe('Add Cinema by Admin', () => {
 
         expect(await this.adminSchedulePage.getCurrentUrl()).toContain('/schedule');
         await this.homePage.clickMoviesTab();
-        expect(await this.moviesPage.getListOfMovieTitles()).toEqual(selectedMovieTitles);
+        expect(await this.moviesPage.getListOfMovieTitles()).toMatch(selectedMovieTitles);
      ;
     });
 
