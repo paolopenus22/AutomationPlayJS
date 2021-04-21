@@ -22,6 +22,7 @@ class EditCinemaPage extends BasePage {
     }
 
     enterRows = async (rowValue) => {
+        await this.driver.sleep(3000);
         await this.driver.wait(until.elementLocated(rows), 5000);
         let row = await this.driver.findElement(rows);
         await row.clear();
